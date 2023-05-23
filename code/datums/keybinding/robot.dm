@@ -85,6 +85,7 @@
 	M.uneq_active()
 	return TRUE
 
+<<<<<<< Updated upstream
 /datum/keybinding/robot/undeploy
 	category = CATEGORY_AI
 	key = "="
@@ -103,3 +104,5 @@
 		return
 	our_shell.undeploy()
 	return TRUE
+=======
+>>>>>>> Stashed changes
