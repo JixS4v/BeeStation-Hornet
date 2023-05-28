@@ -408,7 +408,9 @@ GLOBAL_LIST_EMPTY(parasites) //all currently existing/living guardians
 	if(summoner?.current && summoner.current.stat != DEAD)
 		to_chat(summoner, "<span class='userdanger'>'No...' you think to yourself as your bones crumple to dust, as you watch your stand somehow die.</span>")
 		summoner.current.dust()
-	ghostize(FALSE)
+
+	ghostize(src.theme == GUARDIAN_TECH || GUARDIAN_CARP) //wizards can have revivable holoparas
+	Destroy()
 	nullspace() // move ourself into nullspace for the time being
 
 /mob/living/simple_animal/hostile/guardian/update_health_hud()
