@@ -88,7 +88,7 @@
 			I.Remove(O, 1)
 
 		if(mind)
-			mind.transfer_to(O)
+			mind.transfer_to(O, is_transformation = TRUE)
 			var/datum/antagonist/changeling/changeling = O.mind.has_antag_datum(/datum/antagonist/changeling)
 			if(changeling)
 				var/datum/action/changeling/humanform/hf = new
@@ -123,7 +123,7 @@
 
 	//transfer mind if we didn't yet
 	if(mind)
-		mind.transfer_to(O)
+		mind.transfer_to(O, is_transformation = TRUE)
 		var/datum/antagonist/changeling/changeling = O.mind.has_antag_datum(/datum/antagonist/changeling)
 		if(changeling)
 			var/datum/action/changeling/humanform/hf = new
@@ -237,7 +237,7 @@
 			I.Remove(O, 1)
 
 		if(mind)
-			mind.transfer_to(O)
+			mind.transfer_to(O, is_transformation = TRUE)
 			var/datum/antagonist/changeling/changeling = O.mind.has_antag_datum(/datum/antagonist/changeling)
 			if(changeling)
 				var/datum/action/changeling/humanform/hf = new
@@ -272,7 +272,7 @@
 
 	//transfer mind if we didn't yet
 	if(mind)
-		mind.transfer_to(O)
+		mind.transfer_to(O, is_transformation = TRUE)
 		var/datum/antagonist/changeling/changeling = O.mind.has_antag_datum(/datum/antagonist/changeling)
 		if(changeling)
 			var/datum/action/changeling/humanform/hf = new
@@ -381,7 +381,7 @@
 			I.Remove(O, 1)
 
 		if(mind)
-			mind.transfer_to(O)
+			mind.transfer_to(O, is_transformation = TRUE)
 			var/datum/antagonist/changeling/changeling = O.mind.has_antag_datum(/datum/antagonist/changeling)
 			if(changeling)
 				for(var/datum/action/changeling/humanform/HF in changeling.purchasedpowers)
@@ -416,7 +416,7 @@
 		qdel(BP)
 
 	if(mind)
-		mind.transfer_to(O)
+		mind.transfer_to(O, is_transformation = TRUE)
 		var/datum/antagonist/changeling/changeling = O.mind.has_antag_datum(/datum/antagonist/changeling)
 		if(changeling)
 			for(var/datum/action/changeling/humanform/HF in changeling.purchasedpowers)
@@ -529,7 +529,7 @@
 	if(mind)		//TODO
 		if(!transfer_after)
 			mind.active = FALSE
-		mind.transfer_to(R)
+		mind.transfer_to(R, is_transformation = TRUE)
 	else if(transfer_after)
 		R.key = key
 
@@ -617,7 +617,7 @@
 	var/mob/living/simple_animal/hostile/gorilla/new_gorilla = new (get_turf(src))
 	new_gorilla.a_intent = INTENT_HARM
 	if(mind)
-		mind.transfer_to(new_gorilla)
+		mind.transfer_to(new_gorilla, is_transformation = TRUE)
 	else
 		new_gorilla.key = key
 	to_chat(new_gorilla, "<B>You are now a gorilla. Ooga ooga!</B>")
@@ -632,7 +632,7 @@
 	var/datum/atom_hud/H = GLOB.huds[DATA_HUD_MEDICAL_ADVANCED]
 	H.add_hud_to(new_gorilla)
 	if(mind)
-		mind.transfer_to(new_gorilla)
+		mind.transfer_to(new_gorilla, is_transformation = TRUE)
 	else
 		new_gorilla.key = key
 	to_chat(new_gorilla, "<B>You are now a gorilla. Ooga ooga!</B>")

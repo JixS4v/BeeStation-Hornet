@@ -66,7 +66,7 @@
 				replace_banned_player(new_mob)
 			new_mob.a_intent = INTENT_HARM
 			if(affected_mob.mind)
-				affected_mob.mind.transfer_to(new_mob)
+				affected_mob.mind.transfer_to(new_mob, is_transformation = TRUE)
 			else
 				new_mob.key = affected_mob.key
 

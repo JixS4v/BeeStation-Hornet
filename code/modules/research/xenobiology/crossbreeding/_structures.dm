@@ -551,13 +551,13 @@ GLOBAL_LIST_EMPTY(bluespace_slime_crystals)
 	var/mob/living/simple_animal/pet/chosen_pet = pick(/mob/living/simple_animal/pet/dog/corgi,/mob/living/simple_animal/pet/dog/pug,/mob/living/simple_animal/pet/dog/bullterrier,/mob/living/simple_animal/pet/fox,/mob/living/simple_animal/pet/cat/kitten,/mob/living/simple_animal/pet/cat/space,/mob/living/simple_animal/pet/penguin/emperor)
 	chosen_pet = new chosen_pet(get_turf(human_mob))
 	human_mob.forceMove(chosen_pet)
-	human_mob.mind.transfer_to(chosen_pet)
+	human_mob.mind.transfer_to(chosen_pet, is_transformation = TRUE)
 	ADD_TRAIT(human_mob, TRAIT_NOBREATH, type)
 	affected_mobs += chosen_pet
 
 /obj/structure/slime_crystal/gold/on_mob_leave(mob/living/affected_mob)
 	var/mob/living/carbon/human/human_mob = locate() in affected_mob
-	affected_mob.mind.transfer_to(human_mob)
+	affected_mob.mind.transfer_to(human_mob, is_transformation = TRUE)
 	human_mob.grab_ghost()
 	human_mob.forceMove(get_turf(affected_mob))
 	REMOVE_TRAIT(human_mob, TRAIT_NOBREATH, type)

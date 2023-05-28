@@ -11,7 +11,7 @@
 	if (client)
 		client.give_award(/datum/award/achievement/misc/cluwne, client.mob)
 
-	M.transfer_to(newmob)
+	M.transfer_to(newmob, is_transformation = TRUE)
 	if(key)  // afk (no mind)
 		newmob.key = key
 

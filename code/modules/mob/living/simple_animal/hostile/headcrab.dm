@@ -73,7 +73,7 @@
 		I.Insert(M, 1)
 
 	if(origin && (origin.current ? (origin.current.stat == DEAD) : origin.get_ghost()))
-		origin.transfer_to(M)
+		origin.transfer_to(M, is_transformation = TRUE)
 		var/datum/antagonist/changeling/C = origin.has_antag_datum(/datum/antagonist/changeling)
 		if(!C)
 			C = origin.add_antag_datum(/datum/antagonist/changeling/xenobio)

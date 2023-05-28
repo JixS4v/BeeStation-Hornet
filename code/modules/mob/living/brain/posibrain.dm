@@ -127,7 +127,7 @@ GLOBAL_VAR(posibrain_notify_cooldown)
 	if(brainmob.mind)
 		brainmob.mind.assigned_role = new_role
 	if(C.mind)
-		C.mind.transfer_to(brainmob)
+		C.mind.transfer_to(brainmob, is_transformation = TRUE)
 
 	brainmob.mind.remove_all_antag()
 	brainmob.mind.wipe_memory()
@@ -141,7 +141,7 @@ GLOBAL_VAR(posibrain_notify_cooldown)
 		to_chat(candidate, "<span class='warning'>This [name] was taken over before you could get to it! Perhaps it might be available later?</span>")
 		return FALSE
 	if(candidate.mind && !isobserver(candidate))
-		candidate.mind.transfer_to(brainmob)
+		candidate.mind.transfer_to(brainmob, is_transformation = TRUE)
 	else
 		brainmob.ckey = candidate.ckey
 	name = "[initial(name)] ([brainmob.name])"

@@ -108,7 +108,7 @@
 		language_holder = new (src)
 	return language_holder
 
-/datum/mind/proc/transfer_to(mob/new_character, var/force_key_move = 0)
+/datum/mind/proc/transfer_to(mob/new_character, var/force_key_move = 0, var/is_transformation = FALSE)
 	if(current)	// remove ourself from our old body's mind variable
 		current.mind = null
 		UnregisterSignal(current, COMSIG_MOB_DEATH)
@@ -146,7 +146,7 @@
 	if(active || force_key_move)
 		new_character.key = key		//now transfer the key to link the client to our new body
 	current.update_atom_languages()
-	SEND_SIGNAL(src, COMSIG_MIND_TRANSFER_TO, old_current, new_character)
+	SEND_SIGNAL(src, COMSIG_MIND_TRANSFER_TO, old_current, new_character, is_transformation)
 	// Update SSD indicators
 	if(isliving(old_current))
 		old_current.med_hud_set_status()

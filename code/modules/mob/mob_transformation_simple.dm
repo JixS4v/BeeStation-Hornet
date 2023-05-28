@@ -51,7 +51,7 @@
 		H.dna.update_dna_identity()
 
 	if(mind && isliving(M))
-		mind.transfer_to(M, 1) // second argument to force key move to new mob
+		mind.transfer_to(M, 1, is_transformation = TRUE) // second argument to force key move to new mob
 	else
 		M.key = key
 

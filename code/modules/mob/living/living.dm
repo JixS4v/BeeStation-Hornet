@@ -1058,7 +1058,7 @@
 	new_mob.real_name = real_name
 
 	if(mind)
-		mind.transfer_to(new_mob)
+		mind.transfer_to(new_mob, is_transformation = TRUE)
 	else
 		new_mob.key = key
 

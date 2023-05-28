@@ -45,7 +45,7 @@
 			C.ghostize()
 
 		if(brainmob.mind)
-			brainmob.mind.transfer_to(C)
+			brainmob.mind.transfer_to(C, is_transformation = TRUE)
 		else
 			C.key = brainmob.key
 
@@ -98,7 +98,7 @@
 		if(ZI)
 			brainmob.set_species(ZI.old_species)	//For if the brain is cloned
 	if(L.mind?.current)
-		L.mind.transfer_to(brainmob)
+		L.mind.transfer_to(brainmob, is_transformation = TRUE)
 	to_chat(brainmob, "<span class='notice'>You feel slightly disoriented. That's normal when you're just a brain.</span>")
 
 /obj/item/organ/brain/attackby(obj/item/O, mob/user, params)

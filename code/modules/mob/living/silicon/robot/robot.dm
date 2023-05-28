@@ -217,7 +217,7 @@
 				mmi.brainmob.set_stat(CONSCIOUS)
 				mmi.brainmob.remove_from_dead_mob_list()
 				mmi.brainmob.add_to_alive_mob_list()
-			mind.transfer_to(mmi.brainmob)
+			mind.transfer_to(mmi.brainmob, is_transformation = TRUE)
 			mmi.update_icon()
 		else
 			to_chat(src, "<span class='boldannounce'>Oops! Something went very wrong, your MMI was unable to receive your mind. You have been ghosted. Please make a bug report so we can fix this bug.</span>")

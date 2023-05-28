@@ -100,7 +100,7 @@
 		CRASH("shapeshift holder created outside mob/living")
 	stored = caster
 	if(stored.mind)
-		stored.mind.transfer_to(shape)
+		stored.mind.transfer_to(shape, is_transformation = TRUE)
 	stored.forceMove(src)
 	stored.notransform = TRUE
 	if(convert_damage || istype(source) && source.convert_damage)
@@ -156,7 +156,7 @@
 	stored.forceMove(get_turf(src))
 	stored.notransform = FALSE
 	if(shape.mind)
-		shape.mind.transfer_to(stored)
+		shape.mind.transfer_to(stored, is_transformation = TRUE)
 	if(death)
 		stored.death()
 	else if(convert_damage || (istype(source) && source.convert_damage))

@@ -21,7 +21,7 @@
 
 	if(!mob_inside)
 		var/mob/living/simple_animal/hostile/heretic_summon/armsy/prime/outside = new(user.loc, TRUE, segment_length)
-		target.mind.transfer_to(outside, TRUE)
+		target.mind.transfer_to(outside, TRUE, is_transformation = TRUE)
 		target.forceMove(outside)
 		target.apply_status_effect(STATUS_EFFECT_STASIS, STASIS_ASCENSION_EFFECT)
 		for(var/mob/living/carbon/human/nearby_human in view(9, outside) - target)
@@ -38,7 +38,7 @@
 		var/mob/living/simple_animal/hostile/heretic_summon/armsy/prime/armsy = target
 		if(mob_inside.remove_status_effect(STATUS_EFFECT_STASIS, STASIS_ASCENSION_EFFECT))
 			mob_inside.forceMove(armsy.loc)
-		armsy.mind.transfer_to(mob_inside, TRUE)
+		armsy.mind.transfer_to(mob_inside, TRUE, is_transformation = TRUE)
 		segment_length = armsy.get_length()
 		qdel(armsy)
 		return

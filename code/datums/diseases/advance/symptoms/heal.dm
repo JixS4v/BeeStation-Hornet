@@ -552,7 +552,7 @@ im not even gonna bother with these for the following symptoms. typed em out, co
 									if(ishuman(M))
 										var/mob/living/carbon/human/H = M
 										H.dna.species.regenerate_organs(H, replace_current = FALSE) //get head organs, including the brain, back
-									ownermind.transfer_to(M)
+									ownermind.transfer_to(M, is_transformation = TRUE)
 									M.grab_ghost()
 								break
 			if(bruteheal)

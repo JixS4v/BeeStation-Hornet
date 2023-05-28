@@ -786,7 +786,7 @@
 			var/mob/living/new_mob = new /mob/living/simple_animal/hostile/swarmer(M.loc)
 			if(istype(new_mob))
 				new_mob.a_intent = INTENT_HARM
-				M.mind.transfer_to(new_mob)
+				M.mind.transfer_to(new_mob, is_transformation = TRUE)
 				new_owner.assigned_role = ROLE_SWARMER
 				new_owner.special_role = ROLE_SWARMER
 			qdel(M)

@@ -1009,7 +1009,7 @@ Pass a positive integer as an argument to override a bot's default speed.
 					return
 				paicard = card
 				user.visible_message("[user] inserts [card] into [src]!","<span class='notice'>You insert [card] into [src].</span>")
-				paicard.pai.mind.transfer_to(src)
+				paicard.pai.mind.transfer_to(src, is_transformation = TRUE)
 				to_chat(src, "<span class='notice'>You sense your form change as you are uploaded into [src].</span>")
 				bot_name = name
 				name = paicard.pai.name
@@ -1027,7 +1027,7 @@ Pass a positive integer as an argument to override a bot's default speed.
 /mob/living/simple_animal/bot/proc/ejectpai(mob/user = null, announce = 1)
 	if(paicard)
 		if(mind && paicard.pai)
-			mind.transfer_to(paicard.pai)
+			mind.transfer_to(paicard.pai, is_transformation = TRUE)
 		else if(paicard.pai)
 			paicard.pai.key = key
 		else

@@ -597,9 +597,11 @@ GLOBAL_LIST_EMPTY(parasites) //all currently existing/living guardians
 	if(!QDELETED(gost) && gost.ckey)
 		ckey = gost.ckey
 
-/mob/living/simple_animal/hostile/guardian/proc/OnMindTransfer(datum/_source, mob/old_body, mob/new_body)
+/mob/living/simple_animal/hostile/guardian/proc/OnMindTransfer(datum/_source, mob/old_body, mob/new_body, var/is_transformation)
 	SIGNAL_HANDLER
-
+	//If it's an uplink-spawned guardian, you can't transfer its mind (unless it's something like a transformation, like monkify)
+	if(!is_transformation && (src.theme == GUARDIAN_TECH || GUARDIAN_CARP))
+		return
 	if(!QDELETED(old_body))
 		old_body.remove_verb(/mob/living/proc/guardian_comm)
 		old_body.remove_verb(/mob/living/proc/guardian_recall)

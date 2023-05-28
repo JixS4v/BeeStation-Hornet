@@ -226,7 +226,7 @@ GLOBAL_LIST_INIT(devil_suffix, list(" the Red", " the Soulless", " the Master", 
 	var/mob/living/carbon/true_devil/D = owner.current
 	to_chat(D, "<span class='warning'>Your powers weaken, have more contracts be signed to regain power.</span>")
 	D.oldform.forceMove(D.drop_location())
-	owner.transfer_to(D.oldform)
+	owner.transfer_to(D.oldform, is_transformation = TRUE)
 	give_appropriate_spells()
 	qdel(D)
 	form = BLOOD_LIZARD
@@ -258,7 +258,7 @@ GLOBAL_LIST_INIT(devil_suffix, list(" the Red", " the Soulless", " the Master", 
 	A.faction |= "hell"
 	owner.current.forceMove(A)
 	A.oldform = owner.current
-	owner.transfer_to(A)
+	owner.transfer_to(A, is_transformation = TRUE)
 	A.set_name()
 	give_appropriate_spells()
 	form = TRUE_DEVIL
@@ -471,7 +471,7 @@ GLOBAL_LIST_INIT(devil_suffix, list(" the Red", " the Soulless", " the Master", 
 				A.faction |= "hell"
 				H.forceMove(A)
 				A.oldform = H
-				owner.transfer_to(A, TRUE)
+				owner.transfer_to(A, TRUE, is_transformation = TRUE)
 				A.set_name()
 				if(SOULVALUE >= ARCH_THRESHOLD && ascendable)
 					A.convert_to_archdevil()

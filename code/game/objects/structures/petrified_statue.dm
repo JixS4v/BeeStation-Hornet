@@ -48,7 +48,7 @@
 		forceMove(S.loc)
 		if(S.mind)
 			if(petrified_mob)
-				S.mind.transfer_to(petrified_mob)
+				S.mind.transfer_to(petrified_mob, is_transformation = TRUE)
 				petrified_mob.Paralyze(100)
 				to_chat(petrified_mob, "<span class='notice'>You slowly come back to your senses. You are in control of yourself again!</span>")
 		qdel(S)

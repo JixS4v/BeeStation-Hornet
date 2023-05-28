@@ -89,7 +89,7 @@
 		B.name = real_name
 		B.real_name = real_name
 		if(mind)
-			mind.transfer_to(B)
+			mind.transfer_to(B, is_transformation = TRUE)
 	..()
 
 /mob/living/simple_animal/hostile/gorilla/handle_automated_speech(override)
