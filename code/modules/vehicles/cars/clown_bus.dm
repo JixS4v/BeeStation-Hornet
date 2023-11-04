@@ -6,9 +6,15 @@
 	max_integrity = 10
 	armor = list(MELEE = 0,  BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, RAD = 0, FIRE = 0, ACID = 0, STAMINA = 0)
 	max_occupants = 3
-	movedelay = 0.6
+	var/movedelay_default //default movedelay (one occupant)
+	var/occupied_movedelay_modifier = 0.2
 	key_type = /obj/item/bikehorn
 	key_type_exact = FALSE
+
+/obj/vehicle/Initialize()
+	. = ..()
+	movedelay_default = CONFIG_GET(number/movedelay/run_delay)
+	movedelay = movedelay_default
 
 /obj/vehicle/sealed/car/clown_bus/generate_actions()
 	. = ..()
@@ -20,6 +26,8 @@
 		var/mob/living/carbon/human/H = M
 		if(H.mind?.assigned_role == JOB_NAME_CLOWN||H.mind?.assigned_role == JOB_NAME_MIME) //Ensures only clowns and mimes can drive the bus. (Including more at once)
 			add_control_flags(H, VEHICLE_CONTROL_DRIVE|VEHICLE_CONTROL_PERMISSION)
+	if(length(occupants)>0)
+		movedelay = movedelay_default + occupied_movedelay_modifier*(length(occupants) - 1)
 
 
 
