@@ -28,6 +28,8 @@
 			add_control_flags(H, VEHICLE_CONTROL_DRIVE|VEHICLE_CONTROL_PERMISSION)
 	if(length(occupants)>0)
 		movedelay = movedelay_default + occupied_movedelay_modifier*(length(occupants) - 1)
+	else
+		movedelay = movedelay_default
 
 
 
