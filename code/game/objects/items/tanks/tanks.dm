@@ -89,9 +89,9 @@
 			. += "<span class='notice'>If you want any more information you'll need to get closer.</span>"
 		return
 
-	. += "<span class='notice'>The gauge reads [round(air_contents.total_moles(), 0.01)] mol at [round(src.air_contents.return_pressure(),0.01)] kPa.</span>"	//yogs can read mols
+	. += "<span class='notice'>The gauge reads [round(air_contents.get_moles(), 0.01)] mol at [round(src.air_contents.returnPressure(),0.01)] kPa.</span>"	//yogs can read mols
 
-	var/celsius_temperature = src.air_contents.return_temperature()-T0C
+	var/celsius_temperature = src.air_contents.get_temperature()-T0C
 	var/descriptive
 
 	if (celsius_temperature < 20)
@@ -133,7 +133,7 @@
 	var/mob/living/carbon/human/human_user = user
 	user.visible_message("<span class='suicide'>[user] is putting [src]'s valve to [user.p_their()] lips! It looks like [user.p_theyre()] trying to commit suicide!</span>")
 	playsound(loc, 'sound/effects/spray.ogg', 10, 1, -3)
-	if (!QDELETED(human_user) && air_contents && air_contents.return_pressure() >= 1000)
+	if (!QDELETED(human_user) && air_contents && air_contents.returnPressure() >= 1000)
 		for(var/obj/item/W in human_user)
 			human_user.dropItemToGround(W)
 			if(prob(50))
@@ -165,7 +165,7 @@
 
 /obj/item/tank/ui_data(mob/user)
 	var/list/data = list()
-	data["tankPressure"] = round(air_contents.return_pressure() ? air_contents.return_pressure() : 0)
+	data["tankPressure"] = round(air_contents.returnPressure() ? air_contents.returnPressure() : 0)
 	data["releasePressure"] = round(distribute_pressure ? distribute_pressure : 0)
 	data["defaultReleasePressure"] = round(TANK_DEFAULT_RELEASE_PRESSURE)
 	data["minReleasePressure"] = round(TANK_MIN_RELEASE_PRESSURE)
@@ -211,7 +211,7 @@
 	return air_contents.remove(amount)
 
 /obj/item/tank/remove_air_ratio(ratio)
-	return air_contents.remove_ratio(ratio)
+	return air_contents.removeRatio(ratio)
 
 /obj/item/tank/return_air()
 	return air_contents
@@ -241,11 +241,11 @@
 	if(!air_contents)
 		return null
 
-	var/tank_pressure = air_contents.return_pressure()
+	var/tank_pressure = air_contents.returnPressure()
 	if(tank_pressure < distribute_pressure)
 		distribute_pressure = tank_pressure
 
-	var/moles_needed = distribute_pressure*volume_to_return/(R_IDEAL_GAS_EQUATION*air_contents.return_temperature())
+	var/moles_needed = distribute_pressure*volume_to_return/(R_IDEAL_GAS_EQUATION*air_contents.get_temperature())
 
 	return remove_air(moles_needed)
 
@@ -260,8 +260,8 @@
 	if(!air_contents)
 		return 0
 
-	var/pressure = air_contents.return_pressure()
-	var/temperature = air_contents.return_temperature()
+	var/pressure = air_contents.returnPressure()
+	var/temperature = air_contents.get_temperature()
 
 	if(pressure > TANK_FRAGMENT_PRESSURE)
 		var/explosion_mod = 1
@@ -272,7 +272,7 @@
 		//Give the gas a chance to build up more pressure through reacting
 		for(var/i in 1 to REACTIONS_BEFORE_EXPLOSION)
 			air_contents.react(src)
-		pressure = air_contents.return_pressure()
+		pressure = air_contents.returnPressure()
 		var/range = (pressure-TANK_FRAGMENT_PRESSURE)/TANK_FRAGMENT_SCALE
 		var/turf/epicenter = get_turf(loc)
 
@@ -299,7 +299,7 @@
 			var/turf/T = get_turf(src)
 			if(!T)
 				return
-			var/datum/gas_mixture/leaked_gas = air_contents.remove_ratio(0.25)
+			var/datum/gas_mixture/leaked_gas = air_contents.removeRatio(0.25)
 			T.assume_air(leaked_gas)
 		else
 			integrity--

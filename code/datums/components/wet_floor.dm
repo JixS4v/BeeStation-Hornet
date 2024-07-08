@@ -115,12 +115,12 @@
 	var/turf/open/T = parent
 	var/diff = world.time - last_process
 	var/decrease = 0
-	var/t = T.GetTemperature()
+	var/t = T.get_temperature()
 	switch(t)
 		if(-INFINITY to T0C)
 			add_wet(TURF_WET_ICE, max_time_left())			//Water freezes into ice!
 		if(T0C to T0C + 100)
-			decrease = ((T.air.return_temperature() - T0C) / SSwet_floors.temperature_coeff) * (diff / SSwet_floors.time_ratio)
+			decrease = ((T.return_air().temperature - T0C) / SSwet_floors.temperature_coeff) * (diff / SSwet_floors.time_ratio)
 		if(T0C + 100 to INFINITY)
 			decrease = INFINITY
 	decrease = max(0, decrease)

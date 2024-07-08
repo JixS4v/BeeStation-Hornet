@@ -94,7 +94,7 @@
 				adjustBruteLoss(round(sqrt(bodytemperature)) * 2)
 
 	if(stat != DEAD)
-		var/bz_percentage = environment.total_moles() ? (environment.get_moles(GAS_BZ) / environment.total_moles()) : 0
+		var/bz_percentage = environment.get_moles() ? (environment.get_moles(GAS_BZ) / environment.get_moles()) : 0
 		var/stasis = (bz_percentage >= 0.05 && bodytemperature < (T0C + 100)) || force_stasis
 		if(transformeffects & SLIME_EFFECT_DARK_PURPLE)
 			var/amt = is_adult ? 30 : 15

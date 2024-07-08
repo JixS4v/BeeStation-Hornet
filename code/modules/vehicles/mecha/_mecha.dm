@@ -324,8 +324,8 @@
 	cabin_air = new
 	cabin_air.set_temperature(T20C)
 	cabin_air.set_volume(200)
-	cabin_air.set_moles(GAS_O2, O2STANDARD*cabin_air.return_volume()/(R_IDEAL_GAS_EQUATION*cabin_air.return_temperature()))
-	cabin_air.set_moles(GAS_N2, N2STANDARD*cabin_air.return_volume()/(R_IDEAL_GAS_EQUATION*cabin_air.return_temperature()))
+	cabin_air.set_moles(GAS_O2, O2STANDARD*cabin_air.return_volume()/(R_IDEAL_GAS_EQUATION*cabin_air.get_temperature()))
+	cabin_air.set_moles(GAS_N2, N2STANDARD*cabin_air.return_volume()/(R_IDEAL_GAS_EQUATION*cabin_air.get_temperature()))
 	return cabin_air
 
 /obj/vehicle/sealed/mecha/proc/add_radio()
@@ -389,14 +389,14 @@
 				clearInternalDamage(MECHA_INT_FIRE)
 			if(internal_tank)
 				var/datum/gas_mixture/int_tank_air = internal_tank.return_air()
-				if(int_tank_air.return_pressure() > internal_tank.maximum_pressure && !(internal_damage & MECHA_INT_TANK_BREACH))
+				if(int_tank_air.returnPressure() > internal_tank.maximum_pressure && !(internal_damage & MECHA_INT_TANK_BREACH))
 					setInternalDamage(MECHA_INT_TANK_BREACH)
 				if(int_tank_air && int_tank_air.return_volume() > 0) //heat the air_contents
-					int_tank_air.set_temperature(min(6000+T0C, int_tank_air.return_temperature()+rand(10,15)))
+					int_tank_air.set_temperature(min(6000+T0C, int_tank_air.get_temperature()+rand(10,15)))
 			if(cabin_air && cabin_air.return_volume()>0)
-				cabin_air.set_temperature(min(6000+T0C, cabin_air.return_temperature()+rand(10,15)))
-				if(cabin_air.return_temperature() > max_temperature/2)
-					take_damage(4/round(max_temperature/cabin_air.return_temperature(),0.1), BURN, 0, 0)
+				cabin_air.set_temperature(min(6000+T0C, cabin_air.get_temperature()+rand(10,15)))
+				if(cabin_air.get_temperature() > max_temperature/2)
+					take_damage(4/round(max_temperature/cabin_air.get_temperature(),0.1), BURN, 0, 0)
 
 		if(internal_damage & MECHA_INT_TEMP_CONTROL)
 			internal_temp_regulation = 0
@@ -413,27 +413,27 @@
 
 	if(internal_temp_regulation)
 		if(cabin_air && cabin_air.return_volume() > 0)
-			var/delta = cabin_air.return_temperature() - T20C
-			cabin_air.set_temperature(cabin_air.return_temperature() - max(-10, min(10, round(delta/4,0.1))))
+			var/delta = cabin_air.get_temperature() - T20C
+			cabin_air.set_temperature(cabin_air.get_temperature() - max(-10, min(10, round(delta/4,0.1))))
 
 	if(internal_tank)
 		var/datum/gas_mixture/tank_air = internal_tank.return_air()
 
 		var/release_pressure = internal_tank_valve
-		var/cabin_pressure = cabin_air.return_pressure()
-		var/pressure_delta = min(release_pressure - cabin_pressure, (tank_air.return_pressure() - cabin_pressure)/2)
+		var/cabin_pressure = cabin_air.returnPressure()
+		var/pressure_delta = min(release_pressure - cabin_pressure, (tank_air.returnPressure() - cabin_pressure)/2)
 		var/transfer_moles = 0
 		if(pressure_delta > 0) //cabin pressure lower than release pressure
-			if(tank_air.return_temperature() > 0)
-				transfer_moles = pressure_delta*cabin_air.return_volume()/(cabin_air.return_temperature() * R_IDEAL_GAS_EQUATION)
+			if(tank_air.get_temperature() > 0)
+				transfer_moles = pressure_delta*cabin_air.return_volume()/(cabin_air.get_temperature() * R_IDEAL_GAS_EQUATION)
 				tank_air.transfer_to(cabin_air,transfer_moles)
 		else if(pressure_delta < 0) //cabin pressure higher than release pressure
 			var/datum/gas_mixture/t_air = return_air()
 			pressure_delta = cabin_pressure - release_pressure
 			if(t_air)
-				pressure_delta = min(cabin_pressure - t_air.return_pressure(), pressure_delta)
+				pressure_delta = min(cabin_pressure - t_air.returnPressure(), pressure_delta)
 			if(pressure_delta > 0) //if location pressure is lower than cabin pressure
-				transfer_moles = pressure_delta*cabin_air.return_volume()/(cabin_air.return_temperature() * R_IDEAL_GAS_EQUATION)
+				transfer_moles = pressure_delta*cabin_air.return_volume()/(cabin_air.get_temperature() * R_IDEAL_GAS_EQUATION)
 				cabin_air.transfer_to(t_air, transfer_moles)
 
 	if(occupants)
@@ -926,7 +926,7 @@
 
 /obj/vehicle/sealed/mecha/remove_air_ratio(ratio)
 	if(use_internal_tank)
-		return cabin_air.remove_ratio(ratio)
+		return cabin_air.removeRatio(ratio)
 	return ..()
 
 /obj/vehicle/sealed/mecha/return_air()
@@ -937,16 +937,16 @@
 /obj/vehicle/sealed/mecha/return_analyzable_air()
 	return cabin_air
 
-/obj/vehicle/sealed/mecha/proc/return_pressure()
+/obj/vehicle/sealed/mecha/proc/returnPressure()
 	var/datum/gas_mixture/t_air = return_air()
 	if(t_air)
-		return t_air.return_pressure()
+		return t_air.returnPressure()
 	return
 
-/obj/vehicle/sealed/mecha/return_temperature()
+/obj/vehicle/sealed/mecha/get_temperature()
 	var/datum/gas_mixture/t_air = return_air()
 	if(t_air)
-		return t_air.return_temperature()
+		return t_air.get_temperature()
 	return
 
 /obj/vehicle/sealed/mecha/portableConnectorReturnAir()

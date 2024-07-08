@@ -32,8 +32,8 @@
 	return ..()
 
 /mob/living/carbon/monkey/handle_breath_temperature(datum/gas_mixture/breath)
-	if(abs(get_body_temp_normal() - breath.return_temperature()) > 50)
-		switch(breath.return_temperature())
+	if(abs(get_body_temp_normal() - breath.get_temperature()) > 50)
+		switch(breath.get_temperature())
 			if(-INFINITY to 120)
 				adjustFireLoss(3)
 			if(120 to 200)
@@ -90,7 +90,7 @@
 
 	//Account for massive pressure differences
 
-	var/pressure = environment.return_pressure()
+	var/pressure = environment.returnPressure()
 	var/adjusted_pressure = calculate_affecting_pressure(pressure) //Returns how much pressure actually affects the mob.
 	switch(adjusted_pressure)
 		if(HAZARD_HIGH_PRESSURE to INFINITY)

@@ -251,7 +251,7 @@ field_generator power level display
 		turn_off()
 		return
 	move_resist = INFINITY
-	CanAtmosPass = ATMOS_PASS_NO
+	can_atmos_pass = ATMOS_PASS_NO
 	air_update_turf(TRUE)
 	addtimer(CALLBACK(src, PROC_REF(setup_field), 1), 1)
 	addtimer(CALLBACK(src, PROC_REF(setup_field), 2), 2)

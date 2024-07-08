@@ -91,7 +91,7 @@
 	if(!t_loc)
 		return
 	var/list/newsmokes = list()
-	for(var/turf/T in t_loc.GetAtmosAdjacentTurfs(!circle))
+	for(var/turf/T in get_adjacent_open_turfs(t_loc))
 		var/obj/effect/particle_effect/smoke/foundsmoke = locate() in T //Don't spread smoke where there's already smoke!
 		if(foundsmoke)
 			continue
@@ -176,12 +176,12 @@
 		var/datum/gas_mixture/G = T.air
 		if(!distcheck || get_dist(T, location) < blast) // Otherwise we'll get silliness like people using Nanofrost to kill people through walls with cold air
 			G.set_temperature(temperature)
-		T.air_update_turf()
+		// T.air_update_turf()
 		for(var/obj/effect/hotspot/H in T)
 			qdel(H)
-		if(G.get_moles(GAS_PLASMA))
-			G.adjust_moles(GAS_N2, G.get_moles(GAS_PLASMA))
-			G.set_moles(GAS_PLASMA, 0)
+		if(G.getGroupGas(GAS_PLASMA))
+			G.adjustGas(GAS_NITROGEN, G.gas[GAS_PLASMA])
+			G.adjustGas(GAS_PLASMA, -G.gas[GAS_PLASMA])
 	if (weldvents)
 		for(var/obj/machinery/atmospherics/components/unary/U in T)
 			if(!isnull(U.welded) && !U.welded) //must be an unwelded vent pump or vent scrubber.

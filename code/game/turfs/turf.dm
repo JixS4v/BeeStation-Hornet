@@ -156,7 +156,7 @@ GLOBAL_LIST_EMPTY(created_baseturf_lists)
 
 /turf/proc/__auxtools_update_turf_temp_info()
 
-/turf/return_temperature()
+/turf/get_temperature()
 
 /turf/proc/set_temperature()
 

@@ -265,7 +265,9 @@
 	disarm_product = /obj/item/deployablemine/gas
 
 /obj/effect/mine/gas/mineEffect(mob/victim)
-	atmos_spawn_air("[gas_type]=[gas_amount]")
+	if(isopenturf(loc))
+		var/turf/open/openloc = loc
+		openloc.atmos_spawn_air(gas_type, gas_amount
 
 
 /obj/effect/mine/gas/plasma

@@ -166,7 +166,7 @@
 		adjustOxyLoss(2)
 
 	//CRIT
-	if(!breath || (breath.total_moles() == 0) || !lungs)
+	if(!breath || (breath.get_moles() == 0) || !lungs)
 		if(reagents.has_reagent(/datum/reagent/medicine/epinephrine, needs_metabolizing = TRUE) && lungs)
 			return
 		adjustOxyLoss(1)
@@ -181,8 +181,8 @@
 	var/SA_para_min = 1
 	var/SA_sleep_min = 5
 	var/oxygen_used = 0
-	var/moles = breath.total_moles()
-	var/breath_pressure = (moles*R_IDEAL_GAS_EQUATION*breath.return_temperature())/BREATH_VOLUME
+	var/moles = breath.get_moles()
+	var/breath_pressure = (moles*R_IDEAL_GAS_EQUATION*breath.get_temperature())/BREATH_VOLUME
 	var/O2_partialpressure = ((breath.get_moles(GAS_O2)/moles)*breath_pressure) + (((breath.get_moles(GAS_PLUOXIUM)*8)/moles)*breath_pressure)
 	var/Toxins_partialpressure = (breath.get_moles(GAS_PLASMA)/moles)*breath_pressure
 	var/CO2_partialpressure = (breath.get_moles(GAS_CO2)/moles)*breath_pressure
@@ -237,7 +237,7 @@
 
 	//NITROUS OXIDE
 	if(breath.get_moles(GAS_NITROUS))
-		var/SA_partialpressure = (breath.get_moles(GAS_NITROUS)/breath.total_moles())*breath_pressure
+		var/SA_partialpressure = (breath.get_moles(GAS_NITROUS)/breath.get_moles())*breath_pressure
 		if(SA_partialpressure > SA_para_min)
 			Unconscious(60)
 			if(SA_partialpressure > SA_sleep_min)
@@ -251,7 +251,7 @@
 
 	//BZ (Facepunch port of their Agent B)
 	if(breath.get_moles(GAS_BZ))
-		var/bz_partialpressure = (breath.get_moles(GAS_BZ)/breath.total_moles())*breath_pressure
+		var/bz_partialpressure = (breath.get_moles(GAS_BZ)/breath.get_moles())*breath_pressure
 		if(bz_partialpressure > 1)
 			hallucination += 10
 		else if(bz_partialpressure > 0.01)
@@ -259,12 +259,12 @@
 
 	//TRITIUM
 	if(breath.get_moles(GAS_TRITIUM))
-		var/tritium_partialpressure = (breath.get_moles(GAS_TRITIUM)/breath.total_moles())*breath_pressure
+		var/tritium_partialpressure = (breath.get_moles(GAS_TRITIUM)/breath.get_moles())*breath_pressure
 		radiation += tritium_partialpressure/10
 
 	//NITRYL
 	if(breath.get_moles(GAS_NITRYL))
-		var/nitryl_partialpressure = (breath.get_moles(GAS_NITRYL)/breath.total_moles())*breath_pressure
+		var/nitryl_partialpressure = (breath.get_moles(GAS_NITRYL)/breath.get_moles())*breath_pressure
 		adjustFireLoss(nitryl_partialpressure/4)
 
 	//BREATH TEMPERATURE

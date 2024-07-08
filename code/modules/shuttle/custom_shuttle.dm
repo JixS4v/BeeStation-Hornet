@@ -154,7 +154,7 @@
 		if(!shuttle_heater)
 			continue
 		var/datum/gas_mixture/air_contents = shuttle_heater.airs[1]
-		var/moles = air_contents.total_moles()
+		var/moles = air_contents.get_moles()
 		amount += moles
 	return amount
 

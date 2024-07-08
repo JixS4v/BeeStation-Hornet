@@ -10,6 +10,8 @@
 
 #define SHORT_REAL_LIMIT 16777216
 
+#define LIGHT_SPEED 299792458 // meters per second
+
 /// A 32 bit single-precision floating point number's mantissa gives us 7 significant digits
 #define SIGNIFICANT_PRECISION 7
 

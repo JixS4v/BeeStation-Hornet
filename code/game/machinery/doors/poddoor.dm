@@ -20,6 +20,7 @@
 	var/pod_open_sound  = 'sound/machines/blastdoor.ogg'
 	var/pod_close_sound = 'sound/machines/blastdoor.ogg'
 	icon_state = "blast_closed"
+	block_air_zones = FALSE
 
 /obj/machinery/door/poddoor/attackby(obj/item/W, mob/user, params)
 	. = ..()

@@ -540,7 +540,7 @@
 /obj/item/mecha_parts/mecha_equipment/thrusters/gas/thrust(var/movement_dir)
 	if(!chassis || !chassis.internal_tank)
 		return FALSE
-	var/moles = chassis.internal_tank.air_contents.total_moles()
+	var/moles = chassis.internal_tank.air_contents.get_moles()
 	if(moles < move_cost)
 		chassis.internal_tank.air_contents.remove(moles)
 		return FALSE

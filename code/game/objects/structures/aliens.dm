@@ -63,7 +63,7 @@
 	anchored = TRUE
 	max_integrity = 200
 	var/resintype = null
-	CanAtmosPass = ATMOS_PASS_DENSITY
+	can_atmos_pass = ATMOS_PASS_DENSITY
 
 
 /obj/structure/alien/resin/Initialize(mapload)

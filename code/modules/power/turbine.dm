@@ -29,7 +29,7 @@
 	icon_state = "compressor"
 	density = TRUE
 	resistance_flags = FIRE_PROOF
-	CanAtmosPass = ATMOS_PASS_DENSITY
+	can_atmos_pass = ATMOS_PASS_DENSITY
 	circuit = /obj/item/circuitboard/machine/power_compressor
 	var/obj/machinery/power/turbine/turbine
 	var/datum/gas_mixture/gas_contained
@@ -54,7 +54,7 @@
 	icon_state = "turbine"
 	density = TRUE
 	resistance_flags = FIRE_PROOF
-	CanAtmosPass = ATMOS_PASS_DENSITY
+	can_atmos_pass = ATMOS_PASS_DENSITY
 	circuit = /obj/item/circuitboard/machine/power_turbine
 
 
@@ -217,15 +217,15 @@
 
 	// Weird function but it works. Should be something else...
 
-	var/newrpm = ((compressor.gas_contained.return_temperature()) * compressor.gas_contained.total_moles())/4
+	var/newrpm = ((compressor.gas_contained.get_temperature()) * compressor.gas_contained.get_moles())/4
 
 	newrpm = max(0, newrpm)
 
 	if(!compressor.starter || newrpm > 1000)
 		compressor.rpmtarget = newrpm
 
-	if(compressor.gas_contained.total_moles()>0)
-		var/oamount = min(compressor.gas_contained.total_moles(), (compressor.rpm+100)/35000*compressor.capacity)
+	if(compressor.gas_contained.get_moles()>0)
+		var/oamount = min(compressor.gas_contained.get_moles(), (compressor.rpm+100)/35000*compressor.capacity)
 		if(destroy_output)
 			compressor.gas_contained.remove(oamount)
 		else
@@ -274,7 +274,7 @@
 	data["online"] = compressor?.starter
 	data["power"] = display_power(compressor?.turbine?.lastgen)
 	data["rpm"] = compressor?.rpm
-	data["temp"] = compressor?.gas_contained.return_temperature()
+	data["temp"] = compressor?.gas_contained.get_temperature()
 	return data
 
 /obj/machinery/power/turbine/ui_act(action, params)
@@ -340,7 +340,7 @@
 	data["online"] = compressor?.starter
 	data["power"] = display_power(compressor?.turbine?.lastgen)
 	data["rpm"] = compressor?.rpm
-	data["temp"] = compressor?.gas_contained.return_temperature()
+	data["temp"] = compressor?.gas_contained.get_temperature()
 	return data
 
 /obj/machinery/computer/turbine_computer/ui_act(action, params)

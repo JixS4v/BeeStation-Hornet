@@ -66,10 +66,10 @@
 
 		if(cold_air && hot_air)
 
-			var/cold_air_heat_capacity = cold_air.heat_capacity()
-			var/hot_air_heat_capacity = hot_air.heat_capacity()
+			var/cold_air_heat_capacity = cold_air.getHeatCapacity()
+			var/hot_air_heat_capacity = hot_air.getHeatCapacity()
 
-			var/delta_temperature = hot_air.return_temperature() - cold_air.return_temperature()
+			var/delta_temperature = hot_air.get_temperature() - cold_air.get_temperature()
 
 
 			if(delta_temperature > 0 && cold_air_heat_capacity > 0 && hot_air_heat_capacity > 0)
@@ -80,8 +80,8 @@
 				var/heat = energy_transfer*(1-efficiency)
 				lastgen += energy_transfer*efficiency
 
-				hot_air.set_temperature(hot_air.return_temperature() - energy_transfer/hot_air_heat_capacity)
-				cold_air.set_temperature(cold_air.return_temperature() + heat/cold_air_heat_capacity)
+				hot_air.set_temperature(hot_air.get_temperature() - energy_transfer/hot_air_heat_capacity)
+				cold_air.set_temperature(cold_air.get_temperature() + heat/cold_air_heat_capacity)
 
 				//add_avail(lastgen) This is done in process now
 		// update icon overlays only if displayed level has changed
@@ -128,12 +128,12 @@
 		t += "<BR>"
 
 		t += "<B><font color='blue'>Cold loop</font></B><BR>"
-		t += "Temperature Inlet: [round(cold_circ_air2.return_temperature(), 0.1)] K / Outlet: [round(cold_circ_air1.return_temperature(), 0.1)] K<BR>"
-		t += "Pressure Inlet: [round(cold_circ_air2.return_pressure(), 0.1)] kPa /  Outlet: [round(cold_circ_air1.return_pressure(), 0.1)] kPa<BR>"
+		t += "Temperature Inlet: [round(cold_circ_air2.get_temperature(), 0.1)] K / Outlet: [round(cold_circ_air1.get_temperature(), 0.1)] K<BR>"
+		t += "Pressure Inlet: [round(cold_circ_air2.returnPressure(), 0.1)] kPa /  Outlet: [round(cold_circ_air1.returnPressure(), 0.1)] kPa<BR>"
 
 		t += "<B><font color='red'>Hot loop</font></B><BR>"
-		t += "Temperature Inlet: [round(hot_circ_air2.return_temperature(), 0.1)] K / Outlet: [round(hot_circ_air1.return_temperature(), 0.1)] K<BR>"
-		t += "Pressure Inlet: [round(hot_circ_air2.return_pressure(), 0.1)] kPa / Outlet: [round(hot_circ_air1.return_pressure(), 0.1)] kPa<BR>"
+		t += "Temperature Inlet: [round(hot_circ_air2.get_temperature(), 0.1)] K / Outlet: [round(hot_circ_air1.get_temperature(), 0.1)] K<BR>"
+		t += "Pressure Inlet: [round(hot_circ_air2.returnPressure(), 0.1)] kPa / Outlet: [round(hot_circ_air1.returnPressure(), 0.1)] kPa<BR>"
 
 		t += "</div>"
 	else if(!hot_circ && cold_circ)

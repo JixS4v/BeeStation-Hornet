@@ -158,7 +158,7 @@
 
 /turf/open/indestructible/binary
 	name = "tear in the fabric of reality"
-	CanAtmosPass = ATMOS_PASS_NO
+	can_atmos_pass = ATMOS_PASS_NO
 	baseturfs = /turf/open/indestructible/binary
 	icon_state = "binary"
 	footstep = FOOTSTEP_PLATING
@@ -170,7 +170,7 @@
 /turf/open/indestructible/airblock
 	icon_state = "bluespace"
 	baseturfs = /turf/open/indestructible/airblock
-	CanAtmosPass = ATMOS_PASS_NO
+	can_atmos_pass = ATMOS_PASS_NO
 	init_air = FALSE
 
 /turf/open/Initalize_Atmos(times_fired)
@@ -185,13 +185,13 @@
 
 
 /turf/open/proc/GetHeatCapacity()
-	. = air.heat_capacity()
+	. = air.getHeatCapacity()
 
 /turf/open/proc/GetTemperature()
-	. = air.return_temperature()
+	. = air.get_temperature()
 
 /turf/open/proc/TakeTemperature(temp)
-	air.set_temperature(air.return_temperature() + temp)
+	air.set_temperature(air.get_temperature() + temp)
 	air_update_turf()
 
 /turf/open/proc/freeze_turf()

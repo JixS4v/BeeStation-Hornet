@@ -6,16 +6,16 @@
 	if(status_flags & GODMODE)
 		return
 
-	if(!breath || (breath.total_moles() == 0))
+	if(!breath || (breath.get_moles() == 0))
 		//Aliens breathe in vaccuum
 		return 0
 
 	var/toxins_used = 0
 	var/tox_detect_threshold = 0.02
-	var/breath_pressure = (breath.total_moles()*R_IDEAL_GAS_EQUATION*breath.return_temperature())/BREATH_VOLUME
+	var/breath_pressure = (breath.get_moles()*R_IDEAL_GAS_EQUATION*breath.get_temperature())/BREATH_VOLUME
 
 	//Partial pressure of the toxins in our breath
-	var/toxins_pp = (breath.get_moles(GAS_PLASMA)/breath.total_moles())*breath_pressure
+	var/toxins_pp = (breath.get_moles(GAS_PLASMA)/breath.get_moles())*breath_pressure
 
 	if(toxins_pp > tox_detect_threshold) // Detect toxins in air
 		adjustPlasma(breath.get_moles(GAS_PLASMA)*250)

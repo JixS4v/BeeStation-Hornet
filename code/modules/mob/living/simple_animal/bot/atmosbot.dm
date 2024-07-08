@@ -207,7 +207,7 @@
 		if (!inLineOfSight(source_turf.x, source_turf.y, T.x, T.y, T.z))
 			continue
 		var/datum/gas_mixture/environment = T.return_air()
-		var/environment_pressure = environment.return_pressure()
+		var/environment_pressure = environment.returnPressure()
 
 		var/pressure_delta = min(ATMOSBOT_MAX_PRESSURE_CHANGE, (ONE_ATMOSPHERE - environment_pressure))
 
@@ -242,7 +242,7 @@
 /mob/living/simple_animal/bot/atmosbot/proc/check_area_atmos()
 	var/turf/T = get_turf(src)
 	var/datum/gas_mixture/gas_mix = T.return_air()
-	if(gas_mix.return_pressure() < breached_pressure)
+	if(gas_mix.returnPressure() < breached_pressure)
 		return ATMOSBOT_CHECK_BREACH
 	//Toxins in the air
 	if(emagged != 2)
@@ -250,12 +250,12 @@
 			if(gasses[G] && gas_mix.get_moles(G) > 0.2)
 				return ATMOSBOT_HIGH_TOXINS
 	//Too little oxygen or too little pressure
-	var/partial_pressure = R_IDEAL_GAS_EQUATION * gas_mix.return_temperature() / gas_mix.return_volume()
+	var/partial_pressure = R_IDEAL_GAS_EQUATION * gas_mix.get_temperature() / gas_mix.return_volume()
 	var/oxygen_moles = gas_mix.get_moles(GAS_O2) * partial_pressure
-	if(oxygen_moles < 20 || gas_mix.return_pressure() < WARNING_LOW_PRESSURE)
+	if(oxygen_moles < 20 || gas_mix.returnPressure() < WARNING_LOW_PRESSURE)
 		return ATMOSBOT_LOW_OXYGEN
 	//Check temperature
-	if(temperature_control && (gas_mix.return_temperature() > ideal_temperature + 0.5 || gas_mix.return_temperature() < ideal_temperature - 0.5))
+	if(temperature_control && (gas_mix.get_temperature() > ideal_temperature + 0.5 || gas_mix.get_temperature() < ideal_temperature - 0.5))
 		return ATMOSBOT_BAD_TEMP
 	return ATMOSBOT_AREA_STABLE
 
@@ -265,7 +265,7 @@
 	for(var/obj/structure/holosign/barrier/atmos/A in target_turf)
 		blocked = TRUE
 		break
-	if(!target_turf.CanAtmosPass(target_turf) || blocked)
+	if(!target_turf.can_atmos_pass(target_turf) || blocked)
 		//Pressumable from being inside a holobarrier, move somewhere nearby
 		var/turf/open/floor/floor_turf = pick(view(3, src))
 		if(floor_turf && istype(floor_turf))
@@ -292,21 +292,21 @@
 		for(var/obj/structure/holosign/barrier/atmos/A in checking_turf)
 			blocked = TRUE
 			break
-		if(blocked || !checking_turf.CanAtmosPass(checking_turf))
+		if(blocked || !checking_turf.can_atmos_pass(checking_turf))
 			continue
 		var/datum/gas_mixture/current_air = checking_turf.return_air()
 		if (!current_air)
 			continue
-		var/current_pressure = current_air.return_pressure()
+		var/current_pressure = current_air.returnPressure()
 		//Add adjacent turfs
 		for(var/direction in list(NORTH, SOUTH, EAST, WEST))
 			var/turf/adjacent_turf = get_step(checking_turf, direction)
-			if(adjacent_turf in checked_turfs || !adjacent_turf.CanAtmosPass(adjacent_turf))
+			if(adjacent_turf in checked_turfs || !adjacent_turf.can_atmos_pass(adjacent_turf))
 				continue
 			var/datum/gas_mixture/checking_air = checking_turf.return_air()
 			if (!checking_air)
 				continue
-			var/checking_pressure = checking_air.return_pressure()
+			var/checking_pressure = checking_air.returnPressure()
 			// If the pressure difference is high or its a space turf, place a shield wall here
 			if (abs(checking_pressure - current_pressure) > 30 || isspaceturf(adjacent_turf))
 				return checking_turf

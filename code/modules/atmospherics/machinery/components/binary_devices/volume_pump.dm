@@ -63,8 +63,8 @@
 
 // Pump mechanism just won't do anything if the pressure is too high/too low unless you overclock it.
 
-	var/input_starting_pressure = air1.return_pressure()
-	var/output_starting_pressure = air2.return_pressure()
+	var/input_starting_pressure = air1.returnPressure()
+	var/output_starting_pressure = air2.returnPressure()
 
 	if((input_starting_pressure < 0.01) || ((output_starting_pressure > 9000))&&!overclocked)
 		return
@@ -75,7 +75,7 @@
 	if(overclocked)//Some of the gas from the mixture leaks to the environment when overclocked
 		var/turf/open/T = loc
 		if(istype(T))
-			var/datum/gas_mixture/leaked = air1.remove_ratio(VOLUME_PUMP_LEAK_AMOUNT)
+			var/datum/gas_mixture/leaked = air1.removeRatio(VOLUME_PUMP_LEAK_AMOUNT)
 			T.assume_air(leaked)
 			T.air_update_turf()
 

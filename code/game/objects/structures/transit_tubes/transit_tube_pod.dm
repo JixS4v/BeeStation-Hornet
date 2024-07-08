@@ -172,7 +172,7 @@
 	return air_contents.remove(amount)
 
 /obj/structure/transit_tube_pod/remove_air_ratio(ratio)
-	return air_contents.remove_ratio(ratio)
+	return air_contents.removeRatio(ratio)
 
 /obj/structure/transit_tube_pod/transfer_air(datum/gas_mixture/taker, moles)
 	return air_contents.transfer_to(taker, moles)
@@ -203,8 +203,8 @@
 						setDir(direction)
 						return
 
-/obj/structure/transit_tube_pod/return_temperature()
-	return air_contents.return_temperature()
+/obj/structure/transit_tube_pod/get_temperature()
+	return air_contents.get_temperature()
 
 #undef MOVE_ANIMATION_STAGE_ONE
 #undef MOVE_ANIMATION_STAGE_TWO

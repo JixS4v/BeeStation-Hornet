@@ -602,7 +602,7 @@
 	return TRUE
 
 
-/obj/structure/closet/return_temperature()
+/obj/structure/closet/get_temperature()
 	return
 
 /obj/structure/closet/proc/dive_into(mob/living/user)

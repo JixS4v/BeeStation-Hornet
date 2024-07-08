@@ -40,7 +40,7 @@
 		scrub(T.return_air())
 
 /obj/machinery/portable_atmospherics/scrubber/proc/scrub(var/datum/gas_mixture/mixture)
-	if(air_contents.return_pressure() >= overpressure_m * ONE_ATMOSPHERE)
+	if(air_contents.returnPressure() >= overpressure_m * ONE_ATMOSPHERE)
 		return
 
 	mixture.scrub_into(air_contents, volume_rate / mixture.return_volume(), scrubbing)
@@ -71,7 +71,7 @@
 	var/data = list()
 	data["on"] = on
 	data["connected"] = connected_port ? 1 : 0
-	data["pressure"] = round(air_contents.return_pressure() ? air_contents.return_pressure() : 0)
+	data["pressure"] = round(air_contents.returnPressure() ? air_contents.returnPressure() : 0)
 
 	data["id_tag"] = -1 //must be defined in order to reuse code between portable and vent scrubbers
 	data["filter_types"] = list()
@@ -81,7 +81,7 @@
 	if(holding)
 		data["holding"] = list()
 		data["holding"]["name"] = holding.name
-		data["holding"]["pressure"] = round(holding.air_contents.return_pressure())
+		data["holding"]["pressure"] = round(holding.air_contents.returnPressure())
 	else
 		data["holding"] = null
 	return data

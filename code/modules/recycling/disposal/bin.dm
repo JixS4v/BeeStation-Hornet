@@ -278,7 +278,7 @@
 	data["full_pressure"] = full_pressure
 	data["pressure_charging"] = pressure_charging
 	data["panel_open"] = panel_open
-	data["per"] = CLAMP01(air_contents.return_pressure() / (SEND_PRESSURE))
+	data["per"] = CLAMP01(air_contents.returnPressure() / (SEND_PRESSURE))
 	data["isai"] = isAI(user)
 	return data
 
@@ -378,7 +378,7 @@
 
 	updateDialog()
 
-	if(flush && air_contents.return_pressure() >= SEND_PRESSURE) // flush can happen even without power
+	if(flush && air_contents.returnPressure() >= SEND_PRESSURE) // flush can happen even without power
 		do_flush()
 
 	if(machine_stat & NOPOWER) // won't charge if no power
@@ -395,10 +395,10 @@
 	var/atom/L = loc //recharging from loc turf
 
 	var/datum/gas_mixture/env = L.return_air()
-	var/pressure_delta = (SEND_PRESSURE*1.01) - air_contents.return_pressure()
+	var/pressure_delta = (SEND_PRESSURE*1.01) - air_contents.returnPressure()
 
-	if(env.return_temperature() > 0)
-		var/transfer_moles = 0.05 * delta_time * pressure_delta * air_contents.return_volume() / (env.return_temperature() * R_IDEAL_GAS_EQUATION)
+	if(env.get_temperature() > 0)
+		var/transfer_moles = 0.05 * delta_time * pressure_delta * air_contents.return_volume() / (env.get_temperature() * R_IDEAL_GAS_EQUATION)
 
 		//Actually transfer the gas
 		var/datum/gas_mixture/removed = env.remove(transfer_moles)
@@ -407,7 +407,7 @@
 
 
 	//if full enough, switch to ready mode
-	if(air_contents.return_pressure() >= SEND_PRESSURE)
+	if(air_contents.returnPressure() >= SEND_PRESSURE)
 		full_pressure = TRUE
 		pressure_charging = FALSE
 		update_appearance()

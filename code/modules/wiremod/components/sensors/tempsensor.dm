@@ -23,10 +23,10 @@
 		return
 	//Get environment info
 	var/datum/gas_mixture/environment = location.return_air()
-	var/total_moles = environment.total_moles()
+	var/total_moles = environment.get_moles()
 	if(total_moles)
 		//If there's atmos, return temperature
-		result.set_output(round(environment.return_temperature(),1))
+		result.set_output(round(environment.get_temperature(),1))
 	else
 		result.set_output(0)
 

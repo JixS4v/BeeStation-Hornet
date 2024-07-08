@@ -95,7 +95,7 @@
 
 /obj/machinery/atmospherics/components/unary/shuttle/heater/proc/hasFuel(var/required)
 	var/datum/gas_mixture/air_contents = airs[1]
-	var/moles = air_contents.total_moles()
+	var/moles = air_contents.get_moles()
 	return moles >= required
 
 /obj/machinery/atmospherics/components/unary/shuttle/heater/proc/consumeFuel(var/amount)

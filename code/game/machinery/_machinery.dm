@@ -86,7 +86,7 @@ Class Procs:
 	desc = "Some kind of machine."
 	verb_say = "beeps"
 	verb_yell = "blares"
-	pressure_resistance = 15
+	// pressure_resistance = 15
 	pass_flags_self = PASSMACHINE | LETPASSCLICKS
 	max_integrity = 200
 	layer = BELOW_OBJ_LAYER //keeps shit coming out of the machine from ending up underneath it.
@@ -145,9 +145,12 @@ Class Procs:
 	/// Maximum time an EMP will disable this machine for
 	var/emp_disable_time = 2 MINUTES
 
+	///Used by SSairmachines for optimizing scrubbers and vent pumps.
+	COOLDOWN_DECLARE(hibernating)
+
 /obj/machinery/Initialize(mapload)
 	if(!armor)
-		armor = list(MELEE = 25,  BULLET = 10, LASER = 10, ENERGY = 0, BOMB = 0, BIO = 0, RAD = 0, FIRE = 50, ACID = 70, STAMINA = 0)
+		armor = list(MELEE = 25,  BULLET = 10, ER = 10, ENERGY = 0, BOMB = 0, BIO = 0, RAD = 0, FIRE = 50, ACID = 70, STAMINA = 0)
 	. = ..()
 	GLOB.machines += src
 

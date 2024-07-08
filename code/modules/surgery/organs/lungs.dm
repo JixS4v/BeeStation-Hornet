@@ -130,7 +130,7 @@
 	if(HAS_TRAIT(H, TRAIT_NOBREATH))
 		return
 
-	if(!breath || (breath.total_moles() == 0))
+	if(!breath || (breath.get_moles() == 0))
 		if(H.reagents.has_reagent(crit_stabilizing_reagent))
 			return
 		if(H.health >= H.crit_threshold)
@@ -160,8 +160,8 @@
 
 	var/gas_breathed = 0
 
-	var/pressure = breath.return_pressure()
-	var/total_moles = breath.total_moles()
+	var/pressure = breath.returnPressure()
+	var/total_moles = breath.get_moles()
 	var/list/breath_alert_info = GLOB.gas_data.breath_alert_info
 	var/list/breath_results = GLOB.gas_data.breath_results
 	var/list/breathing_classes = GLOB.gas_data.breathing_classes
@@ -323,7 +323,7 @@
 		H.failed_last_breath = TRUE
 
 /obj/item/organ/lungs/proc/handle_breath_temperature(datum/gas_mixture/breath, mob/living/carbon/human/H) // called by human/life, handles temperatures
-	var/breath_temperature = breath.return_temperature()
+	var/breath_temperature = breath.get_temperature()
 
 	if(!HAS_TRAIT(H, TRAIT_RESISTCOLD)) // COLD DAMAGE
 		var/cold_modifier = H.dna.species.coldmod

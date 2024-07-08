@@ -92,6 +92,7 @@
 #define SPACEVINE_LAYER 4.8
 #define SPACEVINE_MOB_LAYER 4.9
 //#define FLY_LAYER 5 //For easy recordkeeping; this is a byond define
+#define GAS_LAYER 5
 #define GASFIRE_LAYER 5.05
 #define MIMICKED_LIGHTING_LAYER 5.06
 #define RIPPLE_LAYER 5.1

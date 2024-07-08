@@ -144,10 +144,10 @@
 
 		member.air_temporary.multiply(member.volume/air.return_volume())
 
-		member.air_temporary.set_temperature(air.return_temperature())
+		member.air_temporary.set_temperature(air.get_temperature())
 
 /datum/pipeline/proc/temperature_interact(turf/target, share_volume, thermal_conductivity)
-	var/total_heat_capacity = air.heat_capacity()
+	var/total_heat_capacity = air.getHeatCapacity()
 	var/partial_heat_capacity = total_heat_capacity*(share_volume/air.return_volume())
 	var/target_temperature
 	var/target_heat_capacity
@@ -162,7 +162,7 @@
 		var/delta_temperature = 0
 		var/sharer_heat_capacity = 0
 
-		delta_temperature = (air.return_temperature() - target_temperature)
+		delta_temperature = (air.get_temperature() - target_temperature)
 		sharer_heat_capacity = target_heat_capacity
 
 		var/self_temperature_delta = 0
@@ -177,18 +177,18 @@
 		else
 			return 1
 
-		air.set_temperature(air.return_temperature() + self_temperature_delta)
+		air.set_temperature(air.get_temperature() + self_temperature_delta)
 		modeled_location.TakeTemperature(sharer_temperature_delta)
 
 
 	else
 		if((target.heat_capacity>0) && (partial_heat_capacity>0))
-			var/delta_temperature = air.return_temperature() - target.return_temperature()
+			var/delta_temperature = air.get_temperature() - target.get_temperature()
 
 			var/heat = thermal_conductivity*delta_temperature* \
 				(partial_heat_capacity*target.heat_capacity/(partial_heat_capacity+target.heat_capacity))
 
-			air.set_temperature(air.return_temperature() - heat/total_heat_capacity)
+			air.set_temperature(air.get_temperature() - heat/total_heat_capacity)
 	update = TRUE
 
 /datum/pipeline/proc/return_air()

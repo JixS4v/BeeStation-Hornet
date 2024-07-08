@@ -83,8 +83,8 @@
 
 #define JETPACK_SPEED_CHECK(user, movespeed_id, speed, full_speed) \
 	var/datum/gas_mixture/__env = loc.return_air();\
-	if(full_speed && __env.return_pressure() < JETPACK_FAST_PRESSURE_MAX) {\
-		var/__proportion = CLAMP01(1 - ((__env.return_pressure() - JETPACK_FAST_PRESSURE_MIN) / (JETPACK_FAST_PRESSURE_MAX - JETPACK_FAST_PRESSURE_MIN)));\
+	if(full_speed && __env.returnPressure() < JETPACK_FAST_PRESSURE_MAX) {\
+		var/__proportion = CLAMP01(1 - ((__env.returnPressure() - JETPACK_FAST_PRESSURE_MIN) / (JETPACK_FAST_PRESSURE_MAX - JETPACK_FAST_PRESSURE_MIN)));\
 		user.add_or_update_variable_movespeed_modifier(movespeed_id, multiplicative_slowdown=speed * __proportion);\
 	} else {\
 		user.remove_movespeed_modifier(movespeed_id);\

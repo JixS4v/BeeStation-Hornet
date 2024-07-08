@@ -29,7 +29,7 @@
 		return
 	if(tank)
 		. += "<span class='notice'>[icon2html(tank, user)] It has \a [tank] mounted onto it.</span>"
-		. += "<span class='notice'>Its pressure gauge reads [round(tank.air_contents.total_moles(), 0.01)] mol at [round(tank.air_contents.return_pressure(),0.01)] kPa.</span>"
+		. += "<span class='notice'>Its pressure gauge reads [round(tank.air_contents.get_moles(), 0.01)] mol at [round(tank.air_contents.returnPressure(),0.01)] kPa.</span>"
 
 
 /obj/item/melee/powerfist/attackby(obj/item/W, mob/user, params)
@@ -93,7 +93,7 @@
 			if(H.check_shields(src, force))
 				return
 		return ..()
-	if(gasused.total_moles() < gasperfist * fisto_setting)
+	if(gasused.get_moles() < gasperfist * fisto_setting)
 		T.assume_air(gasused)
 		T.air_update_turf()
 		to_chat(user, "<span class='warning'>\The [src]'s piston-ram lets out a weak hiss, it needs more gas!</span>")

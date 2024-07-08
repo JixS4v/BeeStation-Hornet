@@ -1,0 +1,1 @@
+#define COMSIG_TANK_SNOWFLAKE_PELLET_TRIGGER "ihatethiscodesomuch"

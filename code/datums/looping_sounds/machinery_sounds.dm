@@ -80,3 +80,10 @@
 	falloff_exponent = 5
 	falloff_distance = 3
 	volume = 150
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/datum/looping_sound/atmosalarm
+	mid_sounds = list('sound/machines/atmosalarm.ogg' = 1)
+	mid_length = 1 SECONDS
+	ignore_walls = FALSE

@@ -38,3 +38,5 @@
 #define COMSIG_GLOB_STARLIGHT_COLOUR_CHANGE "!starlight_colour_change"
 /// Called whenever the crew manifest is updated
 #define COMSIG_GLOB_CREW_MANIFEST_UPDATE "!crew_manifest_update"
+///Global signal sent when SSticker enters Runlevel Game
+#define COMSIG_GLOB_GAME_START "!game_started"

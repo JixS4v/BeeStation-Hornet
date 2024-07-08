@@ -666,7 +666,7 @@ structure_check() searches for nearby cultist structures required for the invoca
 	invocation = "Khari'd! Eske'te tannin!"
 	icon_state = "4"
 	color = RUNE_COLOR_DARKRED
-	CanAtmosPass = ATMOS_PASS_DENSITY
+	can_atmos_pass = ATMOS_PASS_DENSITY
 	var/datum/timedevent/density_timer
 	var/recharging = FALSE
 
@@ -728,7 +728,7 @@ structure_check() searches for nearby cultist structures required for the invoca
 
 /obj/effect/rune/wall/proc/update_state()
 	deltimer(density_timer)
-	air_update_turf(1)
+	update_nearby_tiles()
 	if(density)
 		var/mutable_appearance/shimmer = mutable_appearance('icons/effects/effects.dmi', "barriershimmer", ABOVE_MOB_LAYER)
 		shimmer.appearance_flags |= RESET_COLOR

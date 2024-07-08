@@ -57,6 +57,6 @@ GLOBAL_LIST_INIT(strippable_alien_humanoid_items, create_strippable_list(list(
 	return FALSE
 
 /mob/living/carbon/alien/humanoid/check_breath(datum/gas_mixture/breath)
-	if(breath && breath.total_moles() > 0 && !sneaking)
+	if(breath && breath.get_moles() > 0 && !sneaking)
 		playsound(get_turf(src), pick('sound/voice/lowHiss2.ogg', 'sound/voice/lowHiss3.ogg', 'sound/voice/lowHiss4.ogg'), 50, 0, -5)
 	return ..()

@@ -26,9 +26,6 @@
 	/// There is a risk of this and contained_turfs leaking, so a subsystem will run it down to 0 incrementally if it gets too large
 	var/list/turf/turfs_to_uncontain = list()
 
-	///Do we have an active fire alarm?
-	var/fire = null
-
 	///Alarm type to count of sources. Not usable for ^ because we handle fires differently
 	var/list/active_alarms = list()
 	///We use this just for fire alarms, because they're area based right now so one alarm going poof shouldn't prevent you from clearing your alarms listing
@@ -92,6 +89,7 @@
 	var/list/firedoors
 	var/list/cameras
 	var/list/firealarms
+	var/list/airalarms
 	var/firedoors_last_closed_on = 0
 	/// typecache to limit the areas that atoms in this area can smooth with, used for shuttles IIRC
 	var/list/canSmoothWithAreas
@@ -372,7 +370,7 @@ GLOBAL_LIST_EMPTY(teleportlocs)
 		return
 
 	if(!fire)
-		set_fire_alarm_effect()
+		communicate_fire_alarm_effect(FIRE_RAISED_PULL)
 		ModifyFiredoors(FALSE)
 		for(var/item in firealarms)
 			var/obj/machinery/firealarm/F = item
@@ -435,33 +433,6 @@ GLOBAL_LIST_EMPTY(teleportlocs)
 	for(var/obj/machinery/door/door in src)
 		close_and_lock_door(door)
 
-/**
-  * Trigger the fire alarm visual affects in an area
-  *
-  * Updates the fire light on fire alarms in the area and sets all lights to emergency mode
-  */
-/area/proc/set_fire_alarm_effect()
-	fire = TRUE
-	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
-	for(var/alarm in firealarms)
-		var/obj/machinery/firealarm/F = alarm
-		F.update_fire_light(fire)
-	for(var/obj/machinery/light/L in src)
-		L.update(TRUE, TRUE, TRUE)
-
-/**
-  * unset the fire alarm visual affects in an area
-  *
-  * Updates the fire light on fire alarms in the area and sets all lights to emergency mode
-  */
-/area/proc/unset_fire_alarm_effects()
-	fire = FALSE
-	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
-	for(var/alarm in firealarms)
-		var/obj/machinery/firealarm/F = alarm
-		F.update_fire_light(fire)
-	for(var/obj/machinery/light/L in src)
-		L.update(TRUE, TRUE, TRUE)
 
 /area/proc/set_pressure_alarm_effect() //Just like fire alarm but blue
 	vacuum = TRUE
@@ -639,3 +610,11 @@ GLOBAL_LIST_EMPTY(teleportlocs)
 
 /area/proc/get_turf_textures()
 	return list()
+
+///Called by airalarms and firealarms to communicate the status of the area to relevant machines
+/area/proc/communicate_fire_alert(code)
+	for(var/obj/machinery/light/L in src)
+		L.update()
+
+	for(var/datum/listener in airalarms + firealarms + firedoors)
+		SEND_SIGNAL(listener, COMSIG_FIRE_ALERT, code,)

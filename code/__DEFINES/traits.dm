@@ -143,6 +143,8 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 /// Abstract condition that prevents movement if being pulled and might be resisted against. Handcuffs and straight jackets, basically.
 #define TRAIT_RESTRAINED "restrained"
 #define TRAIT_INCAPACITATED "incapacitated"
+/// The owner is queued in SSairflow.
+#define TRAIT_EXPERIENCING_AIRFLOW "experiencing_airflow"
 //In some kind of critical condition. Is able to succumb.
 #define TRAIT_CRITICAL_CONDITION "critical-condition"
 

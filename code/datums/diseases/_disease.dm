@@ -134,7 +134,9 @@
 		if(end == start)
 			return TRUE
 		var/turf/Temp = get_step_towards(end, start)
-		if(!CANATMOSPASS(end, Temp))
+		var/canpass_air
+		ATMOS_CANPASS_TURF(canpass_air, end Temp)
+		if(!canpass_air)
 			return FALSE
 		end = Temp
 

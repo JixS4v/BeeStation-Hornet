@@ -113,15 +113,15 @@
 		return
 	var/datum/gas_mixture/air_contents = airs[1]
 
-	var/air_heat_capacity = air_contents.heat_capacity()
+	var/air_heat_capacity = air_contents.getHeatCapacity()
 	var/combined_heat_capacity = heat_capacity + air_heat_capacity
-	var/old_temperature = air_contents.return_temperature()
+	var/old_temperature = air_contents.get_temperature()
 
 	if(combined_heat_capacity > 0)
-		var/combined_energy = heat_capacity * target_temperature + air_heat_capacity * air_contents.return_temperature()
+		var/combined_energy = heat_capacity * target_temperature + air_heat_capacity * air_contents.get_temperature()
 		air_contents.set_temperature(combined_energy/combined_heat_capacity)
 
-	var/temperature_delta= abs(old_temperature - air_contents.return_temperature())
+	var/temperature_delta= abs(old_temperature - air_contents.get_temperature())
 	if(temperature_delta > 1)
 		active_power_usage = (heat_capacity * temperature_delta) / 10 + idle_power_usage
 		update_parents()
@@ -186,8 +186,8 @@
 	data["initial"] = initial(target_temperature)
 
 	var/datum/gas_mixture/air1 = airs[1]
-	data["temperature"] = air1.return_temperature()
-	data["pressure"] = air1.return_pressure()
+	data["temperature"] = air1.get_temperature()
+	data["pressure"] = air1.returnPressure()
 	return data
 
 /obj/machinery/atmospherics/components/unary/thermomachine/ui_act(action, params)

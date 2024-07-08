@@ -132,7 +132,7 @@
 /obj/machinery/anesthetic_machine/examine(mob/user)
 	. = ..()
 	if(attached_tank)
-		. += "<span class='notice'>[icon2html(attached_tank, user)] It has \a [attached_tank] mounted onto it. The tank's gauge reads [round(attached_tank.air_contents.total_moles(), 0.01)] mol at [round(attached_tank.air_contents.return_pressure(),0.01)] kPa.</span>"
+		. += "<span class='notice'>[icon2html(attached_tank, user)] It has \a [attached_tank] mounted onto it. The tank's gauge reads [round(attached_tank.air_contents.get_moles(), 0.01)] mol at [round(attached_tank.air_contents.returnPressure(),0.01)] kPa.</span>"
 	else if(!mask_out)
 		. += "<span class='notice'>There is no tank mounted and the breath mask could be <b>detached</b> from it.</span>"
 

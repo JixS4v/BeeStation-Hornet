@@ -479,10 +479,10 @@
 	unbuckle_all_mobs(force = TRUE)
 
 	if(loc)
-		//Restore air flow if we were blocking it (movables with ATMOS_PASS_PROC will need to do this manually if necessary)
-		if(((CanAtmosPass == ATMOS_PASS_DENSITY && density) || CanAtmosPass == ATMOS_PASS_NO) && isturf(loc))
-			CanAtmosPass = ATMOS_PASS_YES
-			air_update_turf(TRUE)
+		//Restore air flow if we were blocking it (movables with zas_canpass() will need to do this manually if necessary)
+		if(((can_atmos_pass == CANPASS_DENSITY && density) || can_atmos_pass == CANPASS_NEVER) && isturf(loc))
+			can_atmos_pass = CANPASS_ALWAYS
+			update_nearby_tiles()
 		loc.handle_atom_del(src)
 
 	if(opacity)

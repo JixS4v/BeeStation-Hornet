@@ -61,9 +61,9 @@
 	var/cabin_pressure = 0
 	if (internal_tank)
 		int_tank_air = internal_tank.return_air()
-		tank_pressure = internal_tank ? round(int_tank_air.return_pressure(),0.01) : "None"
-		tank_temperature = internal_tank ? int_tank_air.return_temperature() : "Unknown"
-		cabin_pressure = round(return_pressure(),0.01)
+		tank_pressure = internal_tank ? round(int_tank_air.returnPressure(),0.01) : "None"
+		tank_temperature = internal_tank ? int_tank_air.get_temperature() : "Unknown"
+		cabin_pressure = round(returnPressure(),0.01)
 	. =	{"[report_internal_damage()]
 		[integrity<30?"<span class='userdanger'>DAMAGE LEVEL CRITICAL!</span><br>":null]
 		<b>Integrity: </b> [integrity]%<br>
@@ -72,7 +72,7 @@
 		<b>Air tank pressure: </b>[internal_tank?"[tank_pressure]kPa":"N/A"]<br>
 		<b>Air tank temperature: </b>[internal_tank?"[tank_temperature]&deg;K|[tank_temperature - T0C]&deg;C":"N/A"]<br>
 		<b>Cabin pressure: </b>[internal_tank?"[cabin_pressure>WARNING_HIGH_PRESSURE ? "<span class='danger'>[cabin_pressure]</span>": cabin_pressure]kPa":"N/A"]<br>
-		<b>Cabin temperature: </b> [internal_tank?"[return_temperature()]&deg;K|[return_temperature() - T0C]&deg;C":"N/A"]<br>"}
+		<b>Cabin temperature: </b> [internal_tank?"[get_temperature()]&deg;K|[get_temperature() - T0C]&deg;C":"N/A"]<br>"}
 	. += "[get_actions(user)]<br>"
 
 ///Returns HTML for mech actions. Ideally, this proc would be empty for the base mecha. Segmented for easy refactoring.
@@ -100,7 +100,7 @@
 		if(internal_damage & intdamflag)
 			. += dam_reports[tflag]
 			. += "<br />"
-	if(return_pressure() > WARNING_HIGH_PRESSURE)
+	if(returnPressure() > WARNING_HIGH_PRESSURE)
 		. += "<span class='userdanger'>DANGEROUSLY HIGH CABIN PRESSURE.</span><br />"
 
 /obj/vehicle/sealed/mecha/proc/get_equipment_list() //outputs mecha equipment list in html

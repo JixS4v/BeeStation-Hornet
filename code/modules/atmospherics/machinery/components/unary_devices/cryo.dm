@@ -215,7 +215,7 @@
 
 	var/datum/gas_mixture/air1 = airs[1]
 
-	if(air1.total_moles())
+	if(air1.get_moles())
 		if(mob_occupant.bodytemperature < T0C) // Sleepytime. Why? More cryo magic.
 			mob_occupant.Sleeping((mob_occupant.bodytemperature * sleep_factor) * 1000 * delta_time)
 			mob_occupant.Unconscious((mob_occupant.bodytemperature * unconscious_factor) * 1000 * delta_time)
@@ -243,18 +243,18 @@
 	if(occupant)
 		var/mob/living/mob_occupant = occupant
 		var/cold_protection = 0
-		var/temperature_delta = air1.return_temperature() - mob_occupant.bodytemperature // The only semi-realistic thing here: share temperature between the cell and the occupant.
+		var/temperature_delta = air1.get_temperature() - mob_occupant.bodytemperature // The only semi-realistic thing here: share temperature between the cell and the occupant.
 
 		if(ishuman(mob_occupant))
 			var/mob/living/carbon/human/H = mob_occupant
-			cold_protection = H.get_cold_protection(air1.return_temperature())
+			cold_protection = H.get_cold_protection(air1.get_temperature())
 
 		if(abs(temperature_delta) > 1)
-			var/air_heat_capacity = air1.heat_capacity()
+			var/air_heat_capacity = air1.getHeatCapacity()
 
 			var/heat = ((1 - cold_protection) * 0.1 + conduction_coefficient) * temperature_delta * (air_heat_capacity * heat_capacity / (air_heat_capacity + heat_capacity))
 
-			air1.set_temperature(max(air1.return_temperature() - heat / air_heat_capacity, TCMB))
+			air1.set_temperature(max(air1.get_temperature() - heat / air_heat_capacity, TCMB))
 			mob_occupant.adjust_bodytemperature(heat / heat_capacity, TCMB)
 
 		air1.set_moles(GAS_O2, max(0,air1.get_moles(GAS_O2) - 0.5 / efficiency)) // Magically consume gas? Why not, we run on cryo magic.
@@ -396,7 +396,7 @@
 			data["occupant"]["temperaturestatus"] = "bad"
 
 	var/datum/gas_mixture/air1 = airs[1]
-	data["cellTemperature"] = round(air1.return_temperature(), 1)
+	data["cellTemperature"] = round(air1.get_temperature(), 1)
 
 	data["isBeakerLoaded"] = beaker ? TRUE : FALSE
 	var/beakerContents = list()
@@ -460,11 +460,11 @@
 /obj/machinery/atmospherics/components/unary/cryo_cell/can_see_pipes()
 	return 0 // you can't see the pipe network when inside a cryo cell.
 
-/obj/machinery/atmospherics/components/unary/cryo_cell/return_temperature()
+/obj/machinery/atmospherics/components/unary/cryo_cell/get_temperature()
 	var/datum/gas_mixture/G = airs[1]
 
-	if(G.total_moles() > 10)
-		return G.return_temperature()
+	if(G.get_moles() > 10)
+		return G.get_temperature()
 	return ..()
 
 /obj/machinery/atmospherics/components/unary/cryo_cell/default_change_direction_wrench(mob/user, obj/item/wrench/W)

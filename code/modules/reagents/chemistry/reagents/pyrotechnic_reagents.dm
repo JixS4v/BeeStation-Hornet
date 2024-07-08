@@ -321,8 +321,8 @@
 	if(hotspot && !isspaceturf(T))
 		if(T.air)
 			var/datum/gas_mixture/G = T.air
-			if(G.return_temperature() > T20C)
-				G.set_temperature(max(G.return_temperature()/2,T20C))
+			if(G.get_temperature() > T20C)
+				G.set_temperature(max(G.get_temperature()/2,T20C))
 			G.react(src)
 			qdel(hotspot)
 

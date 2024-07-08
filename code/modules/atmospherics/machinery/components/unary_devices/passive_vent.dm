@@ -27,8 +27,8 @@
 	var/active = FALSE
 	var/datum/gas_mixture/external = loc.return_air()
 	var/datum/gas_mixture/internal = airs[1]
-	var/external_pressure = external.return_pressure()
-	var/internal_pressure = internal.return_pressure()
+	var/external_pressure = external.returnPressure()
+	var/internal_pressure = internal.returnPressure()
 	var/pressure_delta = abs(external_pressure - internal_pressure)
 
 	if(pressure_delta > 0.5)

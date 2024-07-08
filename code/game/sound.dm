@@ -84,7 +84,7 @@ falloff_distance - Distance at which falloff begins. Sound is at peak volume (in
 
 		if(below_turf && istransparentturf(turf_source))
 			listeners += get_hearers_in_view(maxdistance, below_turf)
-			
+
 	for(var/mob/listening_mob in listeners | SSmobs.dead_players_by_zlevel[source_z])//observers always hear through walls
 		if(get_dist(listening_mob, turf_source) <= maxdistance)
 			listening_mob.playsound_local(turf_source, soundin, vol, vary, frequency, falloff_exponent, channel, pressure_affected, S, maxdistance, falloff_distance, 1, use_reverb)
@@ -154,7 +154,7 @@ distance_multiplier - Can be used to multiply the distance at which the sound is
 			var/datum/gas_mixture/source_env = turf_source.return_air()
 
 			if(hearer_env && source_env)
-				var/pressure = min(hearer_env.return_pressure(), source_env.return_pressure())
+				var/pressure = min(hearer_env.returnPressure(), source_env.returnPressure())
 				if(pressure < ONE_ATMOSPHERE)
 					pressure_factor = max((pressure - SOUND_MINIMUM_PRESSURE)/(ONE_ATMOSPHERE - SOUND_MINIMUM_PRESSURE), 0)
 			else //space
@@ -357,7 +357,7 @@ distance_multiplier - Can be used to multiply the distance at which the sound is
 	var/turf/T = get_turf(src)
 	var/datum/gas_mixture/hearer_env = T.return_air()
 
-	if (!hearer_env || hearer_env.return_pressure() < SOUND_MINIMUM_PRESSURE) // They can't hear ambience if there isn't enough pressure
+	if (!hearer_env || hearer_env.returnPressure() < SOUND_MINIMUM_PRESSURE) // They can't hear ambience if there isn't enough pressure
 		return FALSE
 
 	return TRUE

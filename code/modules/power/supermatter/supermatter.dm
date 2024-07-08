@@ -215,17 +215,17 @@ GLOBAL_DATUM(main_supermatter_engine, /obj/machinery/power/supermatter_crystal)
 	data["SM_integrity"] = get_integrity_percent()
 	data["SM_power"] = power
 	data["SM_radiation"] = last_rads
-	data["SM_ambienttemp"] = air.return_temperature()
-	data["SM_ambientpressure"] = air.return_pressure()
+	data["SM_ambienttemp"] = air.get_temperature()
+	data["SM_ambientpressure"] = air.returnPressure()
 	data["SM_bad_moles_amount"] = MOLE_PENALTY_THRESHOLD / gasefficency
 	data["SM_moles"] = 0
 	var/list/gasdata = list()
-	if(air.total_moles())
-		data["SM_moles"] = air.total_moles()
+	if(air.get_moles())
+		data["SM_moles"] = air.get_moles()
 		for(var/gasid in air.get_gases())
 			gasdata.Add(list(list(
 			"name"= GLOB.gas_data.names[gasid],
-			"amount" = round(100*air.get_moles(gasid)/air.total_moles(),0.01))))
+			"amount" = round(100*air.get_moles(gasid)/air.get_moles(),0.01))))
 	else
 		for(var/gasid in air.get_gases())
 			gasdata.Add(list(list(
@@ -254,10 +254,10 @@ GLOBAL_DATUM(main_supermatter_engine, /obj/machinery/power/supermatter_crystal)
 	if(integrity < SUPERMATTER_DANGER_PERCENT)
 		return SUPERMATTER_DANGER
 
-	if((integrity < SUPERMATTER_WARNING_PERCENT) || (air.return_temperature() > CRITICAL_TEMPERATURE))
+	if((integrity < SUPERMATTER_WARNING_PERCENT) || (air.get_temperature() > CRITICAL_TEMPERATURE))
 		return SUPERMATTER_WARNING
 
-	if(air.return_temperature() > (CRITICAL_TEMPERATURE * 0.8))
+	if(air.get_temperature() > (CRITICAL_TEMPERATURE * 0.8))
 		return SUPERMATTER_NOTIFY
 
 	if(power > 5)
@@ -425,31 +425,31 @@ GLOBAL_DATUM(main_supermatter_engine, /obj/machinery/power/supermatter_crystal)
 
 	if(produces_gas)
 		//Remove gas from surrounding area
-		removed = env.remove_ratio(gasefficency)
+		removed = env.removeRatio(gasefficency)
 	else
 		// Pass all the gas related code an empty gas container
 		removed = new()
 
 	damage_archived = damage
-	if(!removed || !removed.total_moles() || isspaceturf(T)) //we're in space or there is no gas to process
+	if(!removed || !removed.get_moles() || isspaceturf(T)) //we're in space or there is no gas to process
 		if(takes_damage)
 			damage += max((power / 1000) * DAMAGE_INCREASE_MULTIPLIER, 0.1) // always does at least some damage
 	else
 		if(takes_damage)
 			//causing damage
-			damage = max(damage + (max(clamp(removed.total_moles() / 200, 0.5, 1) * removed.return_temperature() - ((T0C + HEAT_PENALTY_THRESHOLD)*dynamic_heat_resistance), 0) * mole_heat_penalty / 150 ) * DAMAGE_INCREASE_MULTIPLIER, 0)
+			damage = max(damage + (max(clamp(removed.get_moles() / 200, 0.5, 1) * removed.get_temperature() - ((T0C + HEAT_PENALTY_THRESHOLD)*dynamic_heat_resistance), 0) * mole_heat_penalty / 150 ) * DAMAGE_INCREASE_MULTIPLIER, 0)
 			damage = max(damage + (max(power - POWER_PENALTY_THRESHOLD, 0)/500) * DAMAGE_INCREASE_MULTIPLIER, 0)
 			damage = max(damage + (max(combined_gas - MOLE_PENALTY_THRESHOLD, 0)/80) * DAMAGE_INCREASE_MULTIPLIER, 0)
 
 			//healing damage
 			if(combined_gas < MOLE_PENALTY_THRESHOLD)
-				damage = max(damage + (min(removed.return_temperature() - (T0C + HEAT_PENALTY_THRESHOLD), 0) / 150 ), 0)
+				damage = max(damage + (min(removed.get_temperature() - (T0C + HEAT_PENALTY_THRESHOLD), 0) / 150 ), 0)
 
 			//capping damage
 			damage = min(damage_archived + (DAMAGE_HARDCAP * explosion_point),damage)
 
 		//calculating gas related values
-		combined_gas = max(removed.total_moles(), 0)
+		combined_gas = max(removed.get_moles(), 0)
 
 		//This is more error prevention, according to all known laws of atmos, gas_mix.remove() should never make negative mol values.
 		//But this is tg
@@ -498,7 +498,7 @@ GLOBAL_DATUM(main_supermatter_engine, /obj/machinery/power/supermatter_crystal)
 			temp_factor = 30
 			icon_state = base_icon_state
 
-		power = clamp((removed.return_temperature() * temp_factor / T0C) * gasmix_power_ratio + power, 0, SUPERMATTER_MAXIMUM_ENERGY) //Total laser power plus an overload
+		power = clamp((removed.get_temperature() * temp_factor / T0C) * gasmix_power_ratio + power, 0, SUPERMATTER_MAXIMUM_ENERGY) //Total laser power plus an overload
 
 		if(prob(50))
 			last_rads = power * max(0, power_transmission_bonus * (1 + (tritiumcomp * TRITIUM_RADIOACTIVITY_MODIFIER) + (pluoxiumcomp * PLUOXIUM_RADIOACTIVITY_MODIFIER) + (bzcomp * BZ_RADIOACTIVITY_MODIFIER))) // Rad Modifiers BZ(500%), Tritium(300%), and Pluoxium(-200%)
@@ -516,14 +516,14 @@ GLOBAL_DATUM(main_supermatter_engine, /obj/machinery/power/supermatter_crystal)
 
 		//Also keep in mind we are only adding this temperature to (efficiency)% of the one tile the rock
 		//is on. An increase of 4*C @ 25% efficiency here results in an increase of 1*C / (#tilesincore) overall.
-		removed.set_temperature(removed.return_temperature() + ((device_energy * dynamic_heat_modifier) / THERMAL_RELEASE_MODIFIER))
+		removed.set_temperature(removed.get_temperature() + ((device_energy * dynamic_heat_modifier) / THERMAL_RELEASE_MODIFIER))
 
-		removed.set_temperature(max(0, min(removed.return_temperature(), 2500 * dynamic_heat_modifier)))
+		removed.set_temperature(max(0, min(removed.get_temperature(), 2500 * dynamic_heat_modifier)))
 
 		//Calculate how much gas to release
 		removed.adjust_moles(GAS_PLASMA, max((device_energy * dynamic_heat_modifier) / PLASMA_RELEASE_MODIFIER, 0))
 
-		removed.adjust_moles(GAS_O2, max(((device_energy + removed.return_temperature() * dynamic_heat_modifier) - T0C) / OXYGEN_RELEASE_MODIFIER, 0))
+		removed.adjust_moles(GAS_O2, max(((device_energy + removed.get_temperature() * dynamic_heat_modifier) - T0C) / OXYGEN_RELEASE_MODIFIER, 0))
 
 		if(produces_gas)
 			env.merge(removed)

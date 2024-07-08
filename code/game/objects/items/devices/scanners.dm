@@ -651,10 +651,10 @@ GENE SCANNER
 			message += "<span class='boldnotice'>Node [airs.Find(g)]</span>"
 		var/datum/gas_mixture/air_contents = g
 
-		var/total_moles = air_contents.total_moles()
-		var/pressure = air_contents.return_pressure()
-		var/volume = air_contents.return_volume() //could just do mixture.volume... but safety, I guess?
-		var/temperature = air_contents.return_temperature()
+		var/total_moles = air_contents.get_moles()
+		var/pressure = air_contents.returnPressure()
+		var/volume = air_contents.get_volume() //could just do mixture.volume... but safety, I guess?
+		var/temperature = air_contents.get_temperature()
 		var/cached_scan_results = air_contents.analyzer_results
 
 		if(total_moles > 0)
@@ -662,9 +662,10 @@ GENE SCANNER
 			message += "<span class='notice'>Volume: [volume] L</span>"
 			message += "<span class='notice'>Pressure: [round(pressure,0.01)] kPa</span>"
 
-			for(var/id in air_contents.get_gases())
-				var/gas_concentration = air_contents.get_moles(id)/total_moles
-				message += "<span class='notice'>[GLOB.gas_data.names[id]]: [round(gas_concentration*100, 0.01)] % ([round(air_contents.get_moles(id), 0.01)] mol)</span>"
+			for(var/id in air_contents.gas)
+				var/gas_concentration = cached_gases[id]/total_moles
+				var/amount = round(air.gas[id], 0.01)
+				message += span_notice("[xgm_gas_data.name[id]]: [amount >= 0.01 ? "[amount] mol" : "Trace amounts." ] ([round(gas_concentration*100, 0.01)] %)")
 			message += "<span class='notice'>Temperature: [round(temperature - T0C,0.01)] &deg;C ([round(temperature, 0.01)] K)</span>"
 
 		else
@@ -689,8 +690,8 @@ GENE SCANNER
 	var/list/message = list()
 	var/datum/gas_mixture/environment = location.return_air()
 
-	var/pressure = environment.return_pressure()
-	var/total_moles = environment.total_moles()
+	var/pressure = environment.returnPressure()
+	var/total_moles = environment.get_moles()
 
 	message += "<span class='info'><B>Results:</B></span>"
 	if(abs(pressure - ONE_ATMOSPHERE) < 10)
@@ -728,7 +729,7 @@ GENE SCANNER
 				continue
 			var/gas_concentration = environment.get_moles(id)/total_moles
 			message += "<span class='alert'>[GLOB.gas_data.names[id]]: [round(gas_concentration*100, 0.01)] % ([round(environment.get_moles(id), 0.01)] mol)</span>"
-		message += "<span class='info'>Temperature: [round(environment.return_temperature()-T0C, 0.01)] &deg;C ([round(environment.return_temperature(), 0.01)] K)</span>"
+		message += "<span class='info'>Temperature: [round(environment.get_temperature()-T0C, 0.01)] &deg;C ([round(environment.get_temperature(), 0.01)] K)</span>"
 	to_chat(user, EXAMINE_BLOCK(jointext(message, "\n")))
 
 /obj/item/analyzer/ranged

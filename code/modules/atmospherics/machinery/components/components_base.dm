@@ -147,7 +147,7 @@
 		var/times_lost = 0
 		for(var/i in 1 to device_type)
 			var/datum/gas_mixture/air = airs[i]
-			lost += pressures*environment.return_volume()/(air.return_temperature() * R_IDEAL_GAS_EQUATION)
+			lost += pressures*environment.return_volume()/(air.get_temperature() * R_IDEAL_GAS_EQUATION)
 			times_lost++
 		var/shared_loss = lost/times_lost
 
@@ -164,14 +164,19 @@
 // Helpers
 
 /obj/machinery/atmospherics/components/proc/update_parents()
+	if(!SSzas.initialized)
+		return
+	if(rebuilding)
+		update_parents_after_rebuild = TRUE
+		return
 	for(var/i in 1 to device_type)
 		var/datum/pipeline/parent = parents[i]
 		if(!parent)
-			//WARNING("Component is missing a pipenet! Rebuilding...")
-			//At pre-SSair_rebuild_pipenets times, not having a parent wasn't supposed to happen
+			WARNING("Component is missing a pipenet! Rebuilding...")
 			SSair.add_to_rebuild_queue(src)
-			continue
-		parent.update = PIPENET_UPDATE_STATUS_RECONCILE_NEEDED
+			SSairmachines.add_to_rebuild_queue(src)
+		else
+			parent.update = TRUE
 
 /obj/machinery/atmospherics/components/returnPipenets()
 	. = list()

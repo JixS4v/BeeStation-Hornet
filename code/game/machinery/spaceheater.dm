@@ -50,10 +50,10 @@
 	if(ispath(cell))
 		cell = new cell(src)
 	update_appearance()
-	SSair.start_processing_machine(src)
+	SSairmachines.start_processing_machine(src)
 
 /obj/machinery/space_heater/Destroy()
-	SSair.stop_processing_machine(src)
+	SSairmachines.stop_processing_machine(src)
 	return..()
 
 /obj/machinery/space_heater/on_deconstruction()
@@ -102,9 +102,9 @@
 	var/datum/gas_mixture/environment = local_turf.return_air()
 
 	var/new_mode = HEATER_MODE_STANDBY
-	if(set_mode != HEATER_MODE_COOL && environment.return_temperature() < target_temperature - temperature_tolerance)
+	if(set_mode != HEATER_MODE_COOL && environment.get_temperature() < target_temperature - temperature_tolerance)
 		new_mode = HEATER_MODE_HEAT
-	else if(set_mode != HEATER_MODE_HEAT && environment.return_temperature() > target_temperature + temperature_tolerance)
+	else if(set_mode != HEATER_MODE_HEAT && environment.get_temperature() > target_temperature + temperature_tolerance)
 		new_mode = HEATER_MODE_COOL
 
 	if(mode != new_mode)
@@ -114,8 +114,8 @@
 	if(mode == HEATER_MODE_STANDBY)
 		return
 
-	var/heat_capacity = environment.heat_capacity()
-	var/required_energy = abs(environment.return_temperature() - target_temperature) * heat_capacity
+	var/heat_capacity = environment.getHeatCapacity()
+	var/required_energy = abs(environment.get_temperature() - target_temperature) * heat_capacity
 	required_energy = min(required_energy, heating_power)
 
 	if(required_energy < 1)
@@ -125,8 +125,7 @@
 	if(mode == HEATER_MODE_COOL)
 		delta_temperature *= -1
 	if(delta_temperature)
-		environment.set_temperature(environment.return_temperature() + delta_temperature)
-		air_update_turf()
+		environment.set_temperature(environment.get_temperature() + delta_temperature)
 	cell.use(required_energy / efficiency)
 
 /obj/machinery/space_heater/RefreshParts()
@@ -205,9 +204,9 @@
 	usr.visible_message("<span class='notice'>[usr] switches [on ? "on" : "off"] \the [src].</span>", "<span class='notice'>You switch [on ? "on" : "off"] \the [src].</span>")
 	update_appearance()
 	if(on)
-		SSair.start_processing_machine(src)
+		SSairmachines.start_processing_machine(src)
 	else
-		SSair.stop_processing_machine(src)
+		SSairmachines.stop_processing_machine(src)
 
 /obj/machinery/space_heater/ui_state(mob/user)
 	return GLOB.physical_state
@@ -236,9 +235,9 @@
 	var/current_temperature
 	if(istype(local_turf))
 		var/datum/gas_mixture/environment = local_turf.return_air()
-		current_temperature = environment.return_temperature()
+		current_temperature = environment.get_temperature()
 	else if(isturf(local_turf))
-		current_temperature = local_turf.return_temperature()
+		current_temperature = local_turf.get_temperature()
 	if(isnull(current_temperature))
 		data["currentTemp"] = "N/A"
 	else

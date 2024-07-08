@@ -69,7 +69,7 @@
 	var/datum/gas_mixture/air2 = airs[2]
 
 	var/datum/gas_mixture/environment = loc.return_air()
-	var/environment_pressure = environment.return_pressure()
+	var/environment_pressure = environment.returnPressure()
 
 	if(pump_direction) //input -> external
 		var/pressure_delta = 10000
@@ -77,11 +77,11 @@
 		if(pressure_checks&EXT_BOUND)
 			pressure_delta = min(pressure_delta, (external_pressure_bound - environment_pressure))
 		if(pressure_checks&INPUT_MIN)
-			pressure_delta = min(pressure_delta, (air1.return_pressure() - input_pressure_min))
+			pressure_delta = min(pressure_delta, (air1.returnPressure() - input_pressure_min))
 
 		if(pressure_delta > 0)
-			if(air1.return_temperature() > 0)
-				var/transfer_moles = pressure_delta*environment.return_volume()/(air1.return_temperature() * R_IDEAL_GAS_EQUATION)
+			if(air1.get_temperature() > 0)
+				var/transfer_moles = pressure_delta*environment.return_volume()/(air1.get_temperature() * R_IDEAL_GAS_EQUATION)
 
 				loc.assume_air_moles(air1, transfer_moles)
 
@@ -93,13 +93,13 @@
 				parent1.update = PIPENET_UPDATE_STATUS_RECONCILE_NEEDED
 
 	else //external -> output
-		if(environment.return_pressure() > 0)
-			var/our_multiplier = air2.return_volume() / (environment.return_temperature() * R_IDEAL_GAS_EQUATION)
+		if(environment.returnPressure() > 0)
+			var/our_multiplier = air2.return_volume() / (environment.get_temperature() * R_IDEAL_GAS_EQUATION)
 			var/moles_delta = 10000 * our_multiplier
 			if(pressure_checks&EXT_BOUND)
-				moles_delta = min(moles_delta, (environment_pressure - output_pressure_max) * environment.return_volume() / (environment.return_temperature() * R_IDEAL_GAS_EQUATION))
+				moles_delta = min(moles_delta, (environment_pressure - output_pressure_max) * environment.return_volume() / (environment.get_temperature() * R_IDEAL_GAS_EQUATION))
 			if(pressure_checks&INPUT_MIN)
-				moles_delta = min(moles_delta, (input_pressure_min - air2.return_pressure()) * our_multiplier)
+				moles_delta = min(moles_delta, (input_pressure_min - air2.returnPressure()) * our_multiplier)
 
 			if(moles_delta > 0)
 				loc.transfer_air(air2, moles_delta)

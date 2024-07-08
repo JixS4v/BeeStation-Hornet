@@ -601,7 +601,7 @@
 	var/datum/gas_mixture/environment = T.return_air()
 	if(!istype(environment))
 		return
-	var/pressure = environment.return_pressure()
+	var/pressure = environment.returnPressure()
 	if(pressure <= MAXIMUM_LAVALAND_EQUIPMENT_EFFECT_PRESSURE)
 		. = TRUE
 

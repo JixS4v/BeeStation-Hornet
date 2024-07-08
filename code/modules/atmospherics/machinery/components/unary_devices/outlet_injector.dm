@@ -68,7 +68,7 @@
 	var/datum/gas_mixture/air_contents = airs[1]
 
 	if(air_contents != null)
-		if(air_contents.return_temperature() > 0)
+		if(air_contents.get_temperature() > 0)
 			loc.assume_air_ratio(air_contents, volume_rate / air_contents.return_volume())
 			air_update_turf()
 
@@ -83,7 +83,7 @@
 
 	injecting = 1
 
-	if(air_contents.return_temperature() > 0)
+	if(air_contents.get_temperature() > 0)
 		loc.assume_air_ratio(air_contents, volume_rate / air_contents.return_volume())
 		update_parents()
 

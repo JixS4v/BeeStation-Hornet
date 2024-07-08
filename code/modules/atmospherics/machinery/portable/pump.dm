@@ -157,7 +157,7 @@
 	data["on"] = on
 	data["direction"] = direction == PUMP_IN ? TRUE : FALSE
 	data["connected"] = connected_port ? TRUE : FALSE
-	data["pressure"] = round(air_contents.return_pressure() ? air_contents.return_pressure() : 0)
+	data["pressure"] = round(air_contents.returnPressure() ? air_contents.returnPressure() : 0)
 	data["target_pressure"] = round(pump.target_pressure ? pump.target_pressure : 0)
 	data["default_pressure"] = round(PUMP_DEFAULT_PRESSURE)
 	data["min_pressure"] = round(PUMP_MIN_PRESSURE)
@@ -166,7 +166,7 @@
 	if(holding)
 		data["holding"] = list()
 		data["holding"]["name"] = holding.name
-		data["holding"]["pressure"] = round(holding.air_contents.return_pressure())
+		data["holding"]["pressure"] = round(holding.air_contents.returnPressure())
 	else
 		data["holding"] = null
 	return data

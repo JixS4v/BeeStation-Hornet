@@ -69,13 +69,13 @@
 
 	//Early return
 	var/datum/gas_mixture/air1 = airs[1]
-	if(!air1 || air1.return_temperature() <= 0)
+	if(!air1 || air1.get_temperature() <= 0)
 		return
 
 	var/datum/gas_mixture/air2 = airs[2]
 	var/datum/gas_mixture/air3 = airs[3]
 
-	var/output_starting_pressure = air3.return_pressure()
+	var/output_starting_pressure = air3.returnPressure()
 
 	if(output_starting_pressure >= MAX_OUTPUT_PRESSURE)
 		//No need to transfer if target is already full!
@@ -88,9 +88,9 @@
 	if(transfer_ratio <= 0)
 		return
 
-	if(filter_type && air2.return_pressure() <= 9000)
+	if(filter_type && air2.returnPressure() <= 9000)
 		air1.scrub_into(air2, transfer_ratio, list(filter_type))
-	if(air3.return_pressure() <= 9000)
+	if(air3.returnPressure() <= 9000)
 		air1.transfer_ratio_to(air3, transfer_ratio)
 
 	update_parents()

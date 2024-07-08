@@ -12,7 +12,7 @@
 	icon_state = "metal"
 	max_integrity = 200
 	armor = list(MELEE = 10,  BULLET = 0, LASER = 0, ENERGY = 100, BOMB = 10, BIO = 100, RAD = 100, FIRE = 50, ACID = 50, STAMINA = 0)
-	CanAtmosPass = ATMOS_PASS_DENSITY
+	can_atmos_pass = ATMOS_PASS_DENSITY
 	rad_flags = RAD_PROTECT_CONTENTS | RAD_NO_CONTAMINATE
 	rad_insulation = RAD_MEDIUM_INSULATION
 
@@ -93,7 +93,7 @@
 	set_density(FALSE)
 	z_flags &= ~(Z_BLOCK_IN_DOWN | Z_BLOCK_IN_UP)
 	door_opened = TRUE
-	air_update_turf(1)
+	update_nearby_tiles()
 	update_appearance()
 	isSwitchingStates = FALSE
 
@@ -114,7 +114,7 @@
 	z_flags |= (Z_BLOCK_IN_DOWN | Z_BLOCK_IN_UP)
 	set_opacity(TRUE)
 	door_opened = FALSE
-	air_update_turf(1)
+	update_nearby_tiles()
 	update_appearance()
 	isSwitchingStates = FALSE
 

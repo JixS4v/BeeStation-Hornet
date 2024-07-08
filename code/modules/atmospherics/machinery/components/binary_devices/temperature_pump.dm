@@ -40,20 +40,20 @@
 	var/datum/gas_mixture/air_input = airs[1]
 	var/datum/gas_mixture/air_output = airs[2]
 
-	if(!QUANTIZE(air_input.total_moles()) || !QUANTIZE(air_output.total_moles())) //Don't transfer if there's no gas
+	if(!QUANTIZE(air_input.get_moles()) || !QUANTIZE(air_output.get_moles())) //Don't transfer if there's no gas
 		return
-	var/datum/gas_mixture/remove_input = air_input.remove_ratio(0.9)
-	var/datum/gas_mixture/remove_output = air_output.remove_ratio(0.9)
+	var/datum/gas_mixture/remove_input = air_input.removeRatio(0.9)
+	var/datum/gas_mixture/remove_output = air_output.removeRatio(0.9)
 
-	var/coolant_temperature_delta = remove_input.return_temperature() - remove_output.return_temperature()
+	var/coolant_temperature_delta = remove_input.get_temperature() - remove_output.get_temperature()
 
 	if(coolant_temperature_delta > 0)
-		var/input_capacity = remove_input.heat_capacity()
-		var/output_capacity = air_output.heat_capacity()
+		var/input_capacity = remove_input.getHeatCapacity()
+		var/output_capacity = air_output.getHeatCapacity()
 
 		var/cooling_heat_amount = (heat_transfer_rate * 0.01) * coolant_temperature_delta * (input_capacity * output_capacity / (input_capacity + output_capacity))
-		remove_input.set_temperature(max(remove_input.return_temperature() - (cooling_heat_amount / input_capacity), TCMB))
-		remove_output.set_temperature(max(remove_output.return_temperature() + (cooling_heat_amount / output_capacity), TCMB))
+		remove_input.set_temperature(max(remove_input.get_temperature() - (cooling_heat_amount / input_capacity), TCMB))
+		remove_output.set_temperature(max(remove_output.get_temperature() + (cooling_heat_amount / output_capacity), TCMB))
 
 	air_input.merge(remove_input)
 	air_output.merge(remove_output)

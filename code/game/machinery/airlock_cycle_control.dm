@@ -146,7 +146,7 @@
 	if(location)
 		var/datum/gas_mixture/environment = location.return_air()
 		if(environment)
-			pressure = environment.return_pressure()
+			pressure = environment.returnPressure()
 	var/maxpressure = (exterior_pressure && (cyclestate == AIRLOCK_CYCLESTATE_OUTCLOSING || cyclestate == AIRLOCK_CYCLESTATE_OUTOPENING || cyclestate == AIRLOCK_CYCLESTATE_OUTOPEN)) ? exterior_pressure : interior_pressure
 	var/pressure_bars
 	if(maxpressure == 0)
@@ -312,7 +312,7 @@
 	if(location)
 		var/datum/gas_mixture/environment = location.return_air()
 		if(environment)
-			pressure = environment.return_pressure()
+			pressure = environment.returnPressure()
 
 	update_error_status()
 	var/doors_valid = TRUE
@@ -615,7 +615,7 @@
 	if(T)
 		var/datum/gas_mixture/environment = T.return_air()
 		if(environment)
-			pressure = environment.return_pressure()
+			pressure = environment.returnPressure()
 
 	var/data = list(
 		"locked" = locked,

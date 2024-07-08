@@ -74,5 +74,5 @@ GLOBAL_LIST_INIT(freon_color_matrix, list("#2E5E69", "#60A2A8", "#A1AFB1", rgb(0
 		return
 
 	var/turf/open/turf_loc = movable_target.loc
-	if(turf_loc.air?.return_temperature() >= T0C)//unfreezes target
+	if(turf_loc.air?.get_temperature() >= T0C)//unfreezes target
 		Detach(target)

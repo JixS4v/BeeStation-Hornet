@@ -192,7 +192,7 @@
 		to_chat(L, "<span class='warning'>The wings aren't ready to dash yet!</span>")
 		return
 	var/datum/gas_mixture/environment = L.loc.return_air()
-	if(environment && !(environment.return_pressure() > 30))
+	if(environment && !(environment.returnPressure() > 30))
 		to_chat(L, "<span class='warning'>The atmosphere is too thin for you to dash!</span>")
 		return
 

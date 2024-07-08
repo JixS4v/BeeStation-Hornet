@@ -229,3 +229,5 @@ GLOBAL_LIST_INIT(color_list_rainbow, list(
 #define CL_MATRIX_CG 18
 #define CL_MATRIX_CB 19
 #define CL_MATRIX_CA 20
+
+#define RANDOM_RGB rgb(rand(0,255), rand(0,255), rand(0,255))

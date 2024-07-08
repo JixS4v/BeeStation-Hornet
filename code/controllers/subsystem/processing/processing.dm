@@ -9,6 +9,7 @@ SUBSYSTEM_DEF(processing)
 	var/stat_tag = "P" //Used for logging
 	var/list/processing = list()
 	var/list/currentrun = list()
+	var/process_proc = /datum/proc/process
 
 	var/last_time_fired = 0
 
@@ -36,7 +37,7 @@ SUBSYSTEM_DEF(processing)
 		current_run.len--
 		if(QDELETED(thing))
 			processing -= thing
-		else if(thing.process(((flags & SS_KEEP_TIMING) ? continuous_delta_time : wait) * 0.1) == PROCESS_KILL)
+		else if(call(thing,process_proc)(((flags & SS_KEEP_TIMING) ? continuous_delta_time : wait) * 0.1) == PROCESS_KILL)
 			// fully stop so that a future START_PROCESSING will work
 			STOP_PROCESSING(src, thing)
 		if (MC_TICK_CHECK)

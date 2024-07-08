@@ -55,7 +55,7 @@
 
 	src.projectile_type = projectile_type
 
-	if(isammocasing(parent))
+	if(isammocasing(parent) || istype(parent, /obj/item/tank))
 		num_pellets = magnitude
 	else if(isgrenade(parent) || islandmine(parent))
 		radius = magnitude
@@ -75,6 +75,8 @@
 		RegisterSignal(parent, COMSIG_GRENADE_PRIME, PROC_REF(create_blast_pellets))
 	else if(islandmine(parent))
 		RegisterSignal(parent, COMSIG_MINE_TRIGGERED, PROC_REF(create_blast_pellets))
+	else if(istype(parent, /obj/item/tank))
+		RegisterSignal(parent, COMSIG_TANK_SNOWFLAKE_PELLET_TRIGGER, .proc/create_blast_pellets)
 
 /datum/component/pellet_cloud/UnregisterFromParent()
 	UnregisterSignal(parent, list(COMSIG_PARENT_PREQDELETED, COMSIG_PELLET_CLOUD_INIT, COMSIG_GRENADE_PRIME, COMSIG_GRENADE_ARMED, COMSIG_MOVABLE_MOVED, COMSIG_MINE_TRIGGERED, COMSIG_ITEM_DROPPED))

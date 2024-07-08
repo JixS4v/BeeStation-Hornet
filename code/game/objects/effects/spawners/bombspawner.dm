@@ -15,20 +15,15 @@
 
 /obj/effect/spawner/newbomb/Initialize(mapload)
 	. = ..()
-	var/obj/item/transfer_valve/V = new(src.loc)
-	var/obj/item/tank/internals/plasma/PT = new(V)
-	var/obj/item/tank/internals/oxygen/OT = new(V)
-
-	PT.air_contents.set_moles(GAS_PLASMA, pressure_p*PT.volume/(R_IDEAL_GAS_EQUATION*CELSIUS_TO_KELVIN(temp_p)))
-	PT.air_contents.set_temperature(CELSIUS_TO_KELVIN(temp_p))
-
-	OT.air_contents.set_moles(GAS_O2, pressure_o*OT.volume/(R_IDEAL_GAS_EQUATION*CELSIUS_TO_KELVIN(temp_o)))
-	OT.air_contents.set_temperature(CELSIUS_TO_KELVIN(temp_o))
-
-	V.tank_one = PT
-	V.tank_two = OT
-	PT.master = V
-	OT.master = V
+	var/obj/item/transfer_valve/ttv = new(loc)
+	ttv.tank_one = new /obj/item/tank/internals/plasma (ttv)
+	ttv.tank_two = new /obj/item/tank/internals/oxygen (ttv)
+	first_gasmix = ttv.tank_one.return_air()
+	second_gasmix = ttv.tank_two.return_air()
+	first_gasmix.removeRatio(1)
+	second_gasmix.removeRatio(1)
+	first_gasmix.removeRatio(1)
+	second_gasmix.removeRatio(1)
 
 	if(assembly_type)
 		var/obj/item/assembly/A = new assembly_type(V)

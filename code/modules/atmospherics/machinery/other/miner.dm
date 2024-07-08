@@ -58,11 +58,11 @@
 		set_broken(TRUE)
 		return FALSE
 	var/datum/gas_mixture/G = OT.return_air()
-	if(G.return_pressure() > (max_ext_kpa - ((spawn_mol*spawn_temp*R_IDEAL_GAS_EQUATION)/(CELL_VOLUME))))
+	if(G.returnPressure() > (max_ext_kpa - ((spawn_mol*spawn_temp*R_IDEAL_GAS_EQUATION)/(CELL_VOLUME))))
 		broken_message = "<span class='boldwarning'>EXTERNAL PRESSURE OVER THRESHOLD</span>"
 		set_broken(TRUE)
 		return FALSE
-	if(G.total_moles() > max_ext_mol)
+	if(G.get_moles() > max_ext_mol)
 		broken_message = "<span class='boldwarning'>EXTERNAL AIR CONCENTRATION OVER THRESHOLD</span>"
 		set_broken(TRUE)
 		return FALSE
@@ -86,7 +86,7 @@
 		active_power_usage = idle_power_usage
 	var/turf/T = get_turf(src)
 	var/datum/gas_mixture/G = T.return_air()
-	var/P = G.return_pressure()
+	var/P = G.returnPressure()
 	switch(power_draw)
 		if(GASMINER_POWER_NONE)
 			active_power_usage = 0

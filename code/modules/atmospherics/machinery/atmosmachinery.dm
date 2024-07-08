@@ -60,15 +60,15 @@
 		armor = list(MELEE = 25,  BULLET = 10, LASER = 10, ENERGY = 100, BOMB = 0, BIO = 100, RAD = 100, FIRE = 100, ACID = 70, STAMINA = 0)
 	..()
 	if(process)
-		SSair.start_processing_machine(src)
+		SSairmachines.start_processing_machine(src)
 	SetInitDirections()
 
 /obj/machinery/atmospherics/Destroy()
 	for(var/i in 1 to device_type)
 		nullifyNode(i)
 
-	SSair.stop_processing_machine(src)
-	SSair.pipenets_needing_rebuilt -= src
+	SSairmachines.stop_processing_machine(src)
+	SSairmachines.pipenets_needing_rebuilt -= src
 
 	if(pipe_vision_img)
 		qdel(pipe_vision_img)
@@ -194,7 +194,7 @@
 	add_fingerprint(user)
 
 	var/unsafe_wrenching = FALSE
-	var/internal_pressure = int_air.return_pressure()-env_air.return_pressure()
+	var/internal_pressure = int_air.returnPressure()-env_air.returnPressure()
 
 	to_chat(user, "<span class='notice'>You begin to unfasten \the [src]...</span>")
 
@@ -232,7 +232,7 @@
 	if(!pressures)
 		var/datum/gas_mixture/int_air = return_air()
 		var/datum/gas_mixture/env_air = loc.return_air()
-		pressures = int_air.return_pressure() - env_air.return_pressure()
+		pressures = int_air.returnPressure() - env_air.returnPressure()
 
 	user.visible_message("<span class='danger'>[user] is sent flying by pressure!</span>","<span class='userdanger'>The pressure sends you flying!</span>")
 

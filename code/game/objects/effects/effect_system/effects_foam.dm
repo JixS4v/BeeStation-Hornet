@@ -37,15 +37,16 @@
 
 	var/turf/open/T = get_turf(src)
 	var/obj/effect/hotspot/hotspot = (locate(/obj/effect/hotspot) in T)
-	if(hotspot && istype(T) && T.air)
+	if(hotspot && istype(T) && T.zone)
 		qdel(hotspot)
-		var/datum/gas_mixture/G = T.air
-		var/plas_amt = min(30,G.get_moles(GAS_PLASMA)) //Absorb some plasma
-		G.adjust_moles(GAS_PLASMA, -plas_amt)
+		var/datum/gas_mixture/G = T.return_air()
+		if(G.getGroupGas(GAS_PLASMA))
+			var/plas_amt = min(30,G.gas[GAS_PLASMA]) //Absorb some plasma
+			G.adjustGas(GAS_PLASMA, -plas_amt)
 		absorbed_plasma += plas_amt
-		if(G.return_temperature() > T20C)
-			G.set_temperature(max(G.return_temperature()/2,T20C))
-		T.air_update_turf()
+		if(G.get_temperature() > T20C)
+			G.set_temperature(max(G.get_temperature()/2,T20C))
+		// T.air_update_turf()
 
 /obj/effect/particle_effect/foam/firefighting/kill_foam()
 	STOP_PROCESSING(SSfastprocess, src)
@@ -209,8 +210,9 @@
 
 
 /obj/effect/particle_effect/foam/temperature_expose(datum/gas_mixture/air, exposed_temperature, exposed_volume)
-	if(prob(max(0, exposed_temperature - 475))) //foam dissolves when heated
-		kill_foam()
+	if(exposed_temperature > 475)
+		if(prob(max(0, exposed_temperature - 475)))   //foam dissolves when heated
+			kill_foam()
 
 
 /obj/effect/particle_effect/foam/metal/temperature_expose(datum/gas_mixture/air, exposed_temperature, exposed_volume)
@@ -286,16 +288,22 @@
 	desc = "A lightweight foamed metal wall."
 	gender = PLURAL
 	max_integrity = 20
-	CanAtmosPass = ATMOS_PASS_DENSITY
+	can_atmos_pass = CANPASS_NEVER
+	obj_flags = CAN_BE_HIT | BLOCK_Z_IN_DOWN | BLOCK_Z_IN_UP
 
 /obj/structure/foamedmetal/Initialize(mapload)
 	. = ..()
-	air_update_turf(1)
+	update_nearby_tiles()
+
+/obj/structure/foamedmetal/Destroy()
+	set_density(FALSE)
+	update_nearby_tiles()
+	. = ..()
 
 /obj/structure/foamedmetal/Move()
 	var/turf/T = loc
 	. = ..()
-	move_update_air(T)
+	update_nearby_tiles()
 
 /obj/structure/foamedmetal/attack_paw(mob/user)
 	return attack_hand(user)
@@ -331,16 +339,16 @@
 	if(isopenturf(loc))
 		var/turf/open/O = loc
 		O.ClearWet()
-		if(O.air)
-			var/datum/gas_mixture/G = O.air
+		if(O.return_air())
+			var/datum/gas_mixture/G = O.return_air()
 			G.set_temperature(293.15)
 			for(var/obj/effect/hotspot/H in O)
 				qdel(H)
-			for(var/I in G.get_gases())
-				if(I == GAS_O2 || I == GAS_N2)
+			for(var/I in G.gas)
+				if(I == GAS_OXYGEN || I == GAS_NITROGEN)
 					continue
-				G.set_moles(I, 0)
-			O.air_update_turf()
+				G.gas[I] = 0
+			AIR_UPDATE_VALUES(G)
 		for(var/obj/machinery/atmospherics/components/unary/U in O)
 			if(!U.welded)
 				U.welded = TRUE

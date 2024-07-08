@@ -18,6 +18,10 @@
 
 	///First atom flags var
 	var/flags_1 = NONE
+
+	///Second atom flags var
+	var/flags_2 = NONE
+
 	///Intearaction flags
 	var/interaction_flags_atom = NONE
 
@@ -323,6 +327,8 @@
 /atom/proc/CanPass(atom/movable/mover, border_dir)
 	SHOULD_CALL_PARENT(TRUE)
 	SHOULD_BE_PURE(TRUE)
+	if(!mover)
+		return FALSE
 	if(mover.movement_type & PHASING)
 		return TRUE
 	. = CanAllowThrough(mover, border_dir)
@@ -1382,7 +1388,7 @@
 	SEND_SIGNAL(src, COMSIG_ATOM_EXITED, gone, direction)
 
 ///Return atom temperature
-/atom/proc/return_temperature()
+/atom/proc/get_temperature()
 	return
 
 /**
@@ -1923,3 +1929,14 @@ if (UNLINT(target.base_luminosity != new_value)) {\
 
 /atom/movable/proc/get_orbitable()
 	return src
+
+/**
+ * Retrieves the atom's current damage as a percentage where `100%` is `100`.
+ * If `use_raw_values` is `TRUE`, uses the raw var values instead of the `get_*` proc results.
+ */
+/atom/proc/get_integrity_percentage()
+	return round((get_integrity_lost())/max_integrity * 100)
+
+/atom/proc/get_integrity_lost()
+	return max_integrity - get_integrity()
+

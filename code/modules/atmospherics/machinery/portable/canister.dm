@@ -272,12 +272,12 @@
 			air_contents.set_temperature(starter_temp)
 		if(!air_contents.return_volume())
 			CRASH("Auxtools is failing somehow! Gas with pointer [air_contents._extools_pointer_gasmixture] is not valid.")
-		air_contents.set_moles(gas_type, (maximum_pressure * filled) * air_contents.return_volume() / (R_IDEAL_GAS_EQUATION * air_contents.return_temperature()))
+		air_contents.set_moles(gas_type, (maximum_pressure * filled) * air_contents.return_volume() / (R_IDEAL_GAS_EQUATION * air_contents.get_temperature()))
 
 /obj/machinery/portable_atmospherics/canister/air/create_gas()
 	air_contents.set_temperature(starter_temp)
-	air_contents.set_moles(GAS_O2, (O2STANDARD * maximum_pressure * filled) * air_contents.return_volume() / (R_IDEAL_GAS_EQUATION * air_contents.return_temperature()))
-	air_contents.set_moles(GAS_N2, (N2STANDARD * maximum_pressure * filled) * air_contents.return_volume() / (R_IDEAL_GAS_EQUATION * air_contents.return_temperature()))
+	air_contents.set_moles(GAS_O2, (O2STANDARD * maximum_pressure * filled) * air_contents.return_volume() / (R_IDEAL_GAS_EQUATION * air_contents.get_temperature()))
+	air_contents.set_moles(GAS_N2, (N2STANDARD * maximum_pressure * filled) * air_contents.return_volume() / (R_IDEAL_GAS_EQUATION * air_contents.get_temperature()))
 
 /obj/machinery/portable_atmospherics/canister/update_icon()
 	. = ..()
@@ -296,7 +296,7 @@
 		. += mutable_appearance(canister_overlay_file, "can-open")
 	if(connected_port)
 		. += mutable_appearance(canister_overlay_file, "can-connector")
-	var/pressure = air_contents.return_pressure()
+	var/pressure = air_contents.returnPressure()
 	switch(pressure)
 		if((40 * ONE_ATMOSPHERE) to INFINITY)
 			. += mutable_appearance(canister_overlay_file, "can-3")
@@ -410,7 +410,7 @@
 /obj/machinery/portable_atmospherics/canister/ui_data()
 	var/data = list()
 	data["portConnected"] = connected_port ? 1 : 0
-	data["tankPressure"] = round(air_contents.return_pressure() ? air_contents.return_pressure() : 0)
+	data["tankPressure"] = round(air_contents.returnPressure() ? air_contents.returnPressure() : 0)
 	data["releasePressure"] = round(release_pressure ? release_pressure : 0)
 	data["defaultReleasePressure"] = round(CAN_DEFAULT_RELEASE_PRESSURE)
 	data["minReleasePressure"] = round(can_min_release_pressure)
@@ -431,7 +431,7 @@
 	if (holding)
 		data["holdingTank"] = list()
 		data["holdingTank"]["name"] = holding.name
-		data["holdingTank"]["tankPressure"] = round(holding.air_contents.return_pressure())
+		data["holdingTank"]["tankPressure"] = round(holding.air_contents.returnPressure())
 	return data
 
 /obj/machinery/portable_atmospherics/canister/ui_act(action, params)

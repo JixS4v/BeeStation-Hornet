@@ -114,7 +114,7 @@
 	var/obj/item/tank/target_tank = internal || external
 	if(target_tank)
 		tab_data["Internal Atmosphere Info"] = GENERATE_STAT_TEXT("[target_tank.name]")
-		tab_data["Tank Pressure"] = GENERATE_STAT_TEXT("[target_tank.air_contents.return_pressure()]")
+		tab_data["Tank Pressure"] = GENERATE_STAT_TEXT("[target_tank.air_contents.returnPressure()]")
 		tab_data["Distribution Pressure"] = GENERATE_STAT_TEXT("[target_tank.distribute_pressure]")
 
 	if(mind)

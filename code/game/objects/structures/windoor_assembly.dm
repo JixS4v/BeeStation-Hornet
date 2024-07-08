@@ -18,7 +18,7 @@
 	density = FALSE
 	layer = ABOVE_OBJ_LAYER //Just above doors
 	anchored = FALSE
-	CanAtmosPass = ATMOS_PASS_PROC
+	can_atmos_pass = ATMOS_PASS_PROC
 	dir = NORTH
 	set_dir_on_move = FALSE
 
@@ -35,7 +35,7 @@
 	. = ..()
 	if(set_dir)
 		setDir(set_dir)
-	air_update_turf(1)
+	update_nearby_tiles()
 
 	var/static/list/loc_connections = list(
 		COMSIG_ATOM_EXIT = PROC_REF(on_exit),
@@ -45,7 +45,7 @@
 
 /obj/structure/windoor_assembly/Destroy()
 	set_density(FALSE)
-	air_update_turf(1)
+	update_nearby_tiles()
 	return ..()
 
 /obj/structure/windoor_assembly/Move()
@@ -71,7 +71,7 @@
 
 	return TRUE
 
-/obj/structure/windoor_assembly/CanAtmosPass(turf/T)
+/obj/structure/windoor_assembly/can_atmos_pass(turf/T)
 	if(get_dir(loc, T) == dir)
 		return !density
 	else

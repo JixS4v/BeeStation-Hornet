@@ -122,7 +122,7 @@
 /obj/item/tank/jetpack/proc/allow_thrust(num, mob/living/user, use_fuel = TRUE)
 	if(!on || !known_user)
 		return
-	if((num < 0.005 || num > THRUST_REQUIREMENT_GRAVITY * 0.5 || air_contents.total_moles() < num))
+	if((num < 0.005 || num > THRUST_REQUIREMENT_GRAVITY * 0.5 || air_contents.get_moles() < num))
 		turn_off(user)
 		return
 
@@ -152,7 +152,7 @@
 /obj/item/tank/jetpack/improvised/allow_thrust(num, mob/living/user, use_fuel = TRUE)
 	if(!on || !known_user)
 		return
-	if((num < 0.005 || THRUST_REQUIREMENT_GRAVITY * 0.5 || air_contents.total_moles() < num))
+	if((num < 0.005 || THRUST_REQUIREMENT_GRAVITY * 0.5 || air_contents.get_moles() < num))
 		turn_off(user)
 		return
 	if(rand(0,250) == 0)

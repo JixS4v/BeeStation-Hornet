@@ -77,12 +77,12 @@
 	bomb.merge_gases(temp)
 	if(prereaction)
 		temp.react(src)
-		var/prereaction_pressure = temp.return_pressure()
+		var/prereaction_pressure = temp.returnPressure()
 		if(prereaction_pressure < TANK_FRAGMENT_PRESSURE)
 			return 0
 	for(var/i in 1 to reaction_cycles)
 		temp.react(src)
-	var/pressure = temp.return_pressure()
+	var/pressure = temp.returnPressure()
 	qdel(temp)
 	if(pressure < TANK_FRAGMENT_PRESSURE)
 		return 0

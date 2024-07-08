@@ -92,6 +92,7 @@
 		return
 	return ..()
 
+/*
 /obj/effect/decal/cleanable/oil/fire_act(exposed_temperature, exposed_volume)
 	if(exposed_temperature < 480)
 		return
@@ -99,6 +100,7 @@
 	var/turf/T = get_turf(src)
 	qdel(src)
 	new /obj/effect/hotspot(T)
+*/
 
 /obj/effect/decal/cleanable/oil/streak
 	icon_state = "streak1"

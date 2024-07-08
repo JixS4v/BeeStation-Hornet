@@ -9,7 +9,7 @@
 	anchored = TRUE
 	layer = BELOW_MOB_LAYER
 	pass_flags_self = PASSBLOB
-	CanAtmosPass = ATMOS_PASS_PROC
+	can_atmos_pass = ATMOS_PASS_PROC
 	var/point_return = 0 //How many points the blob gets back when it removes a blob of that type. If less than 0, blob cannot be removed.
 	max_integrity = 30
 	armor = list(MELEE = 0,  BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, RAD = 0, FIRE = 80, ACID = 70, STAMINA = 0)
@@ -32,7 +32,7 @@
 	setDir(pick(GLOB.cardinals))
 	update_icon()
 	if(atmosblock)
-		air_update_turf(1)
+		update_nearby_tiles()
 	ConsumeTile()
 
 /obj/structure/blob/proc/creation_action() //When it's created by the overmind, do this.
@@ -41,7 +41,7 @@
 /obj/structure/blob/Destroy()
 	if(atmosblock)
 		atmosblock = FALSE
-		air_update_turf(1)
+		update_nearby_tiles()
 	if(overmind)
 		overmind.blobs_legit -= src  //if it was in the legit blobs list, it isn't now
 	GLOB.blobs -= src //it's no longer in the all blobs list either
@@ -68,7 +68,7 @@
 /obj/structure/blob/BlockThermalConductivity()
 	return atmosblock
 
-/obj/structure/blob/CanAtmosPass(turf/T)
+/obj/structure/blob/can_atmos_pass(turf/T)
 	return !atmosblock
 
 /obj/structure/blob/update_icon() //Updates color based on overmind color if we have an overmind.

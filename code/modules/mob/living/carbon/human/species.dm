@@ -2110,7 +2110,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 
 /// Handle the air pressure of the environment
 /datum/species/proc/handle_environment_pressure(datum/gas_mixture/environment, mob/living/carbon/human/H)
-	var/pressure = environment.return_pressure()
+	var/pressure = environment.returnPressure()
 	var/adjusted_pressure = H.calculate_affecting_pressure(pressure)
 
 	// Set alerts and apply damage based on the amount of pressure
@@ -2245,7 +2245,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		var/obj/item/organ/wings/wings = H.getorganslot(ORGAN_SLOT_WINGS)
 		if(wings.flight_level == WINGS_FLIGHTLESS)
 			var/datum/gas_mixture/current = H.loc.return_air()
-			if(current && (current.return_pressure() >= ONE_ATMOSPHERE*0.85)) //as long as there's reasonable pressure and no gravity, flight is possible
+			if(current && (current.returnPressure() >= ONE_ATMOSPHERE*0.85)) //as long as there's reasonable pressure and no gravity, flight is possible
 				return TRUE
 	if(H.movement_type & FLYING)
 		return TRUE
@@ -2289,7 +2289,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	if(ismoth(H) && HAS_TRAIT(H, TRAIT_MOTH_BURNT))
 		return FALSE
 	var/datum/gas_mixture/environment = T.return_air()
-	if(environment && !(environment.return_pressure() > 30) && wings.flight_level <= WINGS_FLYING)
+	if(environment && !(environment.returnPressure() > 30) && wings.flight_level <= WINGS_FLYING)
 		to_chat(H, "<span class='warning'>The atmosphere is too thin for you to fly!</span>")
 		return FALSE
 	else

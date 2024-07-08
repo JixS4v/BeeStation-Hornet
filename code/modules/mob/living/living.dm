@@ -992,15 +992,15 @@
 	setMovetype(movement_type & ~FLOATING) // If we were without gravity, the bouncing animation got stopped, so we make sure to restart it in next life().
 
 /mob/living/proc/get_temperature(datum/gas_mixture/environment)
-	var/loc_temp = environment ? environment.return_temperature() : T0C
+	var/loc_temp = environment ? environment.get_temperature() : T0C
 	if(isobj(loc))
 		var/obj/oloc = loc
-		var/obj_temp = oloc.return_temperature()
+		var/obj_temp = oloc.get_temperature()
 		if(obj_temp != null)
 			loc_temp = obj_temp
 	else if(isspaceturf(get_turf(src)))
 		var/turf/heat_turf = get_turf(src)
-		loc_temp = heat_turf.return_temperature()
+		loc_temp = heat_turf.get_temperature()
 	return loc_temp
 
 /mob/living/proc/can_track(mob/living/user)

@@ -342,7 +342,7 @@ GLOBAL_LIST_INIT(blacklisted_automated_baseturfs, typecacheof(list(
 			continue
 		total.merge(S.air)
 
-	air.copy_from(total.remove_ratio(1/turf_count))
+	air.copy_from(total.removeRatio(1/turf_count))
 
 /turf/proc/ReplaceWithLattice()
 	ScrapeAway(flags = CHANGETURF_INHERIT_AIR)

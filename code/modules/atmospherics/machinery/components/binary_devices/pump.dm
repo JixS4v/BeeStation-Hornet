@@ -64,17 +64,13 @@
 		return
 	var/datum/gas_mixture/air1 = airs[1]
 	var/datum/gas_mixture/air2 = airs[2]
-	var/output_starting_pressure = air2.return_pressure()
+	var/output_starting_pressure = air2.returnPressure()
 	if((target_pressure - output_starting_pressure) < 0.01)
 		//No need to pump gas if target is already reached!
 		return
 	//Calculate necessary moles to transfer using PV=nRT
-	if((air1.total_moles() > 0) && (air1.return_temperature()>0))
-		var/pressure_delta = target_pressure - output_starting_pressure
-		var/transfer_moles = pressure_delta*air2.return_volume()/(air1.return_temperature() * R_IDEAL_GAS_EQUATION)
-
-		air1.transfer_to(air2,transfer_moles)
-
+	var/transfer_moles = calculate_transfer_moles(air1, air2, target_pressure - air2.returnPressure())
+	if(pump_gas(air1, air2, transfer_moles))
 		update_parents()
 
 /obj/machinery/atmospherics/components/binary/pump/proc/set_on(active)
@@ -291,7 +287,7 @@
 		return
 	var/datum/gas_mixture/air_input = connected_pump.airs[1]
 	var/datum/gas_mixture/air_output = connected_pump.airs[2]
-	input_pressure.set_output(air_input.return_pressure())
-	output_pressure.set_output(air_output.return_pressure())
-	input_temperature.set_output(air_input.return_temperature())
-	output_temperature.set_output(air_output.return_temperature())
+	input_pressure.set_output(air_input.returnPressure())
+	output_pressure.set_output(air_output.returnPressure())
+	input_temperature.set_output(air_input.get_temperature())
+	output_temperature.set_output(air_output.get_temperature())

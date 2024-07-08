@@ -61,11 +61,11 @@
 			"sigtype" = "status",
 			"id_tag" = id_tag,
 			"timestamp" = world.time,
-			"pressure" = air_sample.return_pressure(),
-			"temperature" = air_sample.return_temperature(),
+			"pressure" = air_sample.returnPressure(),
+			"temperature" = air_sample.get_temperature(),
 			"gases" = list()
 		))
-		var/total_moles = air_sample.total_moles()
+		var/total_moles = air_sample.get_moles()
 		if(total_moles)
 			for(var/gas_id in air_sample.get_gases())
 				var/gas_name = GLOB.gas_data.names[gas_id]
@@ -81,11 +81,11 @@
 
 /obj/machinery/air_sensor/Initialize(mapload)
 	. = ..()
-	SSair.start_processing_machine(src)
+	SSairmachines.start_processing_machine(src)
 	set_frequency(frequency)
 
 /obj/machinery/air_sensor/Destroy()
-	SSair.stop_processing_machine(src)
+	SSairmachines.stop_processing_machine(src)
 	SSradio.remove_object(src, frequency)
 	return ..()
 
